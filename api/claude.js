@@ -1,3 +1,5 @@
+const https = require('https');
+
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -11,21 +13,40 @@ module.exports = async function handler(req, res) {
 
   try {
     const { messages, system, max_tokens } = req.body;
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01'
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: max_tokens || 1000,
-        system,
-        messages
-      })
+    const body = JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: max_tokens || 1000,
+      system,
+      messages
     });
-    const data = await response.json();
+
+    const data = await new Promise((resolve, reject) => {
+      const options = {
+        hostname: 'api.anthropic.com',
+        path: '/v1/messages',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01',
+          'Content-Length': Buffer.byteLength(body)
+        }
+      };
+
+      const req = https.request(options, (response) => {
+        let data = '';
+        response.on('data', chunk => data += chunk);
+        response.on('end', () => {
+          try { resolve(JSON.parse(data)); }
+          catch(e) { reject(new Error('Failed to parse response')); }
+        });
+      });
+
+      req.on('error', reject);
+      req.write(body);
+      req.end();
+    });
+
     if (data.error) return res.status(500).json({ error: data.error.message });
     return res.status(200).json(data);
   } catch (error) {
