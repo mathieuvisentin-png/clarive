@@ -17,11 +17,7 @@
   }
   body { font-family: 'Outfit', sans-serif; background: var(--cream); color: var(--ink); min-height: 100vh; display: flex; flex-direction: column; }
 
-  .topbar {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 1rem 2rem; border-bottom: 1px solid var(--border);
-    background: rgba(250,248,243,0.95); position: sticky; top: 0; z-index: 10;
-  }
+  .topbar { display: flex; align-items: center; justify-content: space-between; padding: 1rem 2rem; border-bottom: 1px solid var(--border); background: rgba(250,248,243,0.95); position: sticky; top: 0; z-index: 10; }
   .logo { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 400; color: var(--ink); text-decoration: none; }
   .logo em { color: var(--sage); font-style: italic; }
   .prog-wrap { display: flex; align-items: center; gap: 8px; }
@@ -29,33 +25,27 @@
   .prog-fill { height: 100%; background: var(--sage); border-radius: 2px; transition: width 0.4s ease; }
   .prog-label { font-size: 12px; color: var(--ink-light); }
 
-  /* SCREENS */
   .screen { display: none; flex: 1; flex-direction: column; }
   .screen.active { display: flex; }
 
-  /* WELCOME SCREEN */
+  /* WELCOME */
   .welcome-wrap { max-width: 560px; margin: 0 auto; padding: 3rem 2rem; flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 1.5rem; }
   .welcome-hello { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; font-weight: 300; color: var(--ink); line-height: 1.1; }
   .welcome-hello em { font-style: italic; color: var(--sage); }
   .welcome-from { font-size: 14px; color: var(--ink-light); margin-top: 0.5rem; }
-
   .info-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; }
   .info-card h3 { font-size: 14px; font-weight: 500; color: var(--ink); margin-bottom: 1rem; }
   .info-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 14px; color: var(--ink-mid); }
   .info-item:last-child { border-bottom: none; padding-bottom: 0; }
   .info-item span { color: var(--sage); font-weight: 500; flex-shrink: 0; }
-
   .privacy-card { background: var(--sage-pale); border: 1px solid rgba(29,158,117,0.2); border-radius: var(--radius); padding: 1.25rem; display: flex; gap: 12px; align-items: flex-start; }
   .privacy-card p { font-size: 13px; color: var(--ink-mid); line-height: 1.6; }
-  .privacy-card .lock { font-size: 20px; flex-shrink: 0; }
-
   .btn-start { background: var(--ink); color: var(--cream); border: none; border-radius: 40px; padding: 15px 32px; font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 500; cursor: pointer; transition: background 0.2s; width: 100%; }
   .btn-start:hover { background: var(--sage); }
 
-  /* INTERVIEW SCREEN */
+  /* INTERVIEW */
   .interview-wrap { display: flex; flex-direction: column; flex: 1; max-width: 700px; width: 100%; margin: 0 auto; }
   .chat-area { flex: 1; overflow-y: auto; padding: 1.5rem 2rem; display: flex; flex-direction: column; gap: 1rem; min-height: 300px; }
-
   .msg { display: flex; gap: 10px; align-items: flex-start; animation: msgIn 0.3s ease; }
   @keyframes msgIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
   .msg.user { flex-direction: row-reverse; }
@@ -65,17 +55,11 @@
   .msg-bubble { max-width: 75%; padding: 12px 16px; border-radius: 18px; font-size: 14px; line-height: 1.6; }
   .msg.ai .msg-bubble { background: var(--white); border: 1px solid var(--border); border-bottom-left-radius: 4px; color: var(--ink); }
   .msg.user .msg-bubble { background: var(--ink); color: var(--cream); border-bottom-right-radius: 4px; }
-
   .typing { display: flex; gap: 4px; align-items: center; padding: 4px 0; }
   .t-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ink-light); animation: tdot 1.2s infinite; }
   .t-dot:nth-child(2) { animation-delay: 0.2s; }
   .t-dot:nth-child(3) { animation-delay: 0.4s; }
   @keyframes tdot { 0%,60%,100% { opacity: 0.3; } 30% { opacity: 1; } }
-
-  .quick-replies { padding: 0 2rem 0.75rem; display: flex; gap: 6px; flex-wrap: wrap; }
-  .qr-btn { font-family: 'Outfit', sans-serif; font-size: 12px; padding: 6px 14px; border-radius: 20px; border: 1px solid var(--border); background: var(--white); color: var(--ink-light); cursor: pointer; transition: all 0.15s; }
-  .qr-btn:hover { border-color: var(--sage); color: var(--sage); background: var(--sage-pale); }
-
   .input-area { padding: 1rem 2rem 1.5rem; border-top: 1px solid var(--border); display: flex; gap: 10px; align-items: flex-end; background: var(--cream); }
   .chat-input { flex: 1; font-family: 'Outfit', sans-serif; font-size: 14px; resize: none; min-height: 46px; max-height: 120px; border-radius: var(--radius); padding: 12px 16px; line-height: 1.5; border: 1px solid var(--border); background: var(--white); color: var(--ink); outline: none; transition: border-color 0.2s; }
   .chat-input:focus { border-color: var(--sage); }
@@ -85,12 +69,13 @@
   .send-btn:disabled { background: var(--border); cursor: not-allowed; }
   .send-btn svg { width: 18px; height: 18px; fill: var(--cream); }
 
-  /* REPORT SCREEN */
+  /* REPORT */
   .report-wrap { max-width: 680px; margin: 0 auto; padding: 2rem; flex: 1; }
   .report-generating { text-align: center; padding: 4rem 2rem; }
   .spinner { width: 40px; height: 40px; border: 3px solid var(--border); border-top-color: var(--sage); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 1.5rem; }
   @keyframes spin { to { transform: rotate(360deg); } }
-  .report-generating p { font-size: 15px; color: var(--ink-light); }
+  .report-generating p { font-size: 15px; color: var(--ink-light); line-height: 1.8; }
+  .gen-step { font-size: 13px; color: var(--sage); margin-top: 0.5rem; }
 
   .report-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
   .report-title-text { font-family: 'Cormorant Garamond', serif; font-size: 1.75rem; font-weight: 300; color: var(--ink); }
@@ -102,7 +87,6 @@
   .r-section { margin-bottom: 1.75rem; }
   .r-section-title { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; color: var(--ink-light); margin-bottom: 10px; }
   .r-summary { font-size: 14px; line-height: 1.8; color: var(--ink-mid); }
-
   .k-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 14px; background: var(--white); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 6px; }
   .k-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
   .k-dot.high { background: #E24B4A; }
@@ -113,13 +97,10 @@
   .k-tag.high { background: #FCEBEB; color: #A32D2D; }
   .k-tag.medium { background: #FAEEDA; color: #854F0B; }
   .k-tag.low { background: var(--sage-pale); color: #085041; }
-
   .gap-item { font-size: 13px; color: var(--ink); padding: 9px 14px; border-left: 2px solid #EF9F27; background: #FAEEDA; border-radius: 0 8px 8px 0; margin-bottom: 6px; }
-
   .report-footer { padding: 1.5rem 0; border-top: 1px solid var(--border); margin-top: 2rem; text-align: center; }
   .report-footer p { font-size: 13px; color: var(--ink-light); margin-bottom: 1rem; }
   .delivered-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--sage-pale); color: var(--sage); font-size: 13px; font-weight: 500; padding: 8px 18px; border-radius: 20px; border: 1px solid rgba(29,158,117,0.2); }
-
   .hidden { display: none !important; }
 </style>
 </head>
@@ -133,39 +114,33 @@
   </div>
 </div>
 
-<!-- WELCOME SCREEN -->
+<!-- WELCOME -->
 <div class="screen active" id="s-welcome">
   <div class="welcome-wrap">
     <div>
       <div class="welcome-hello">Hello <em id="w-name">there</em> 👋</div>
       <div class="welcome-from" id="w-from"></div>
     </div>
-
     <div class="info-card">
       <h3>What happens in this session</h3>
       <div class="info-item"><span>→</span>A private AI conversation about your role and knowledge</div>
-      <div class="info-item"><span>→</span>7 focused questions at your own pace</div>
-      <div class="info-item"><span>→</span>Takes about 20–40 minutes</div>
+      <div class="info-item"><span>→</span>The AI will ask follow-up questions to go deeper on important topics</div>
+      <div class="info-item"><span>→</span>Takes about 20–40 minutes at your own pace</div>
       <div class="info-item"><span>→</span>No manager present — just you and the AI</div>
-      <div class="info-item"><span>→</span>Your answers generate a knowledge transfer report</div>
+      <div class="info-item"><span>→</span>Your answers generate a specific, detailed knowledge transfer report</div>
     </div>
-
     <div class="privacy-card">
-      <div class="lock">🔒</div>
+      <div style="font-size:20px;flex-shrink:0">🔒</div>
       <p>This session is <strong>private and confidential</strong>. Your data is GDPR compliant and used solely to create your knowledge transfer report. It is not shared with anyone outside your organisation.</p>
     </div>
-
-    <button class="btn-start" onclick="startInterview()">
-      Start my knowledge session →
-    </button>
+    <button class="btn-start" onclick="startInterview()">Start my knowledge session →</button>
   </div>
 </div>
 
-<!-- INTERVIEW SCREEN -->
+<!-- INTERVIEW -->
 <div class="screen" id="s-interview">
   <div class="interview-wrap">
     <div class="chat-area" id="chat-area"></div>
-    <div class="quick-replies" id="quick-replies"></div>
     <div class="input-area">
       <textarea class="chat-input" id="chat-input" placeholder="Type your answer here..." rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
       <button class="send-btn" id="send-btn" onclick="sendMessage()" disabled>
@@ -175,60 +150,66 @@
   </div>
 </div>
 
-<!-- REPORT SCREEN -->
+<!-- REPORT -->
 <div class="screen" id="s-report">
   <div class="report-wrap">
     <div class="report-generating" id="report-generating">
       <div class="spinner"></div>
-      <p>Analysing your session and generating the knowledge transfer report...</p>
+      <p>Analysing your session in depth...<br>Building your personalised knowledge transfer report.</p>
+      <div class="gen-step" id="gen-step">Reading your responses...</div>
     </div>
     <div id="report-content" class="hidden"></div>
   </div>
 </div>
 
 <script>
-  const QUESTIONS = [
-    "To start, can you walk me through the top 3 responsibilities that take most of your time in this role?",
-    "What key relationships — internal stakeholders, vendors, or clients — would someone stepping into your role need to know about?",
-    "Are there any recurring processes or workflows that are critical but not well documented anywhere?",
-    "What institutional knowledge do you carry that you feel only you would know?",
-    "Are there any active projects or ongoing initiatives at a sensitive stage right now?",
-    "What are the biggest risks someone new to this role should be aware of in the first 90 days?",
-    "Finally — if you had one piece of advice for your successor, what would it be?"
-  ];
-
-  const QR_SETS = [
-    ["Strategy & roadmap", "Day-to-day operations", "Mix of both"],
-    ["Several key stakeholders", "Mostly internal team", "External partners too"],
-    ["Yes, several undocumented", "Most things are documented", "A few informal ones"],
-    ["Quite a lot actually", "Some things here and there", "Most is documented"],
-    ["Yes, a few sensitive ones", "Nothing critical pending", "One major project in progress"],
-    ["Several important risks", "Mainly onboarding challenges", "Fairly straightforward"],
-    ["Build relationships first", "Learn the tools deeply", "Ask lots of questions"]
-  ];
+  const params = new URLSearchParams(window.location.search);
+  const session = {
+    name: params.get('n') || 'there',
+    role: params.get('r') || 'your role',
+    mgr: params.get('m') || 'your manager',
+    reason: params.get('s') || 'transition'
+  };
 
   const reasonLabels = {
     offboarding: 'Employee Offboarding', merger: 'Merger & Acquisition',
     transition: 'Role Transition', succession: 'Succession Planning', critical: 'Critical Knowledge Capture'
   };
 
-  // Parse URL params
-  const params = new URLSearchParams(window.location.search);
-  const session = {
-    name: params.get('n') || 'there',
-    role: params.get('r') || 'your role',
-    mgr: params.get('m') || 'your manager',
-    reason: params.get('s') || 'transition',
-    preview: params.get('preview') === '1'
-  };
-
-  // Set welcome screen
   document.getElementById('w-name').textContent = session.name.split(' ')[0];
-  document.getElementById('w-from').textContent = `${session.mgr} has invited you to a Clarive knowledge session for: ${reasonLabels[session.reason] || session.reason}`;
+  document.getElementById('w-from').textContent = `${session.mgr} has invited you to a Clarive knowledge session — ${reasonLabels[session.reason] || session.reason}`;
 
-  let history = [];
-  let qIdx = 0;
+  // Full conversation history for the AI (includes AI messages too)
+  let conversationHistory = [];
+  let questionCount = 0;
+  const MAX_QUESTIONS = 12; // allows follow-ups
   let waiting = false;
+  let sessionComplete = false;
+
+  // System prompt for the AI interviewer
+  const INTERVIEWER_SYSTEM = `You are Clarive, an expert AI knowledge transfer interviewer. You are conducting a confidential exit interview with ${session.name}, who is a ${session.role}. The session is for: ${reasonLabels[session.reason] || session.reason}. Their manager is ${session.mgr}.
+
+Your goal is to extract deep, specific, actionable institutional knowledge that would be lost if this person left tomorrow.
+
+INTERVIEW STRUCTURE:
+You have a structured set of core topics to cover, but you must adapt dynamically:
+1. Key responsibilities and how time is spent
+2. Critical relationships (internal and external) — names, context, history
+3. Undocumented processes and tribal knowledge
+4. Risks, landmines, and things that could go wrong
+5. Active projects and sensitive ongoing situations
+6. Advice for successor
+
+CRITICAL RULES:
+- Ask ONE question at a time
+- When the person mentions something specific (a name, a risk, a process, a supplier), ALWAYS ask a targeted follow-up to extract more detail before moving on
+- If they say something vague like "there are some risks", probe: "Can you be more specific — what are the top 2 or 3 risks you're thinking of?"
+- Reference what they said in previous answers to show you're listening
+- After covering all topics (roughly 8-12 exchanges), say exactly: "INTERVIEW_COMPLETE" on its own line, then add a warm closing message
+- Be warm, professional, and reassuring — remind them this is confidential
+- Extract NAMES, SPECIFIC PROCESSES, SPECIFIC RISKS — not generalities
+
+Start with a warm welcome and your first question about their key responsibilities.`;
 
   function showScreen(id) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -239,18 +220,14 @@
     return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
   }
 
-  function startInterview() {
-    showScreen('s-interview');
-    document.getElementById('prog-wrap').style.display = 'flex';
-    askNext();
-  }
-
   function addMessage(role, text) {
     const area = document.getElementById('chat-area');
     const d = document.createElement('div');
     d.className = 'msg ' + role;
     const initials = role === 'ai' ? 'AI' : getInitials(session.name);
-    d.innerHTML = `<div class="msg-avatar">${initials}</div><div class="msg-bubble">${text}</div>`;
+    // Clean display text (remove INTERVIEW_COMPLETE marker)
+    const displayText = text.replace('INTERVIEW_COMPLETE', '').trim();
+    d.innerHTML = `<div class="msg-avatar">${initials}</div><div class="msg-bubble">${displayText}</div>`;
     area.appendChild(d);
     area.scrollTop = area.scrollHeight;
   }
@@ -267,115 +244,217 @@
   function removeTyping() { const t = document.getElementById('typing-msg'); if (t) t.remove(); }
 
   function setProgress(pct) {
-    document.getElementById('prog-fill').style.width = pct + '%';
-    document.getElementById('prog-label').textContent = Math.round(pct) + '%';
+    document.getElementById('prog-fill').style.width = Math.min(pct, 95) + '%';
+    document.getElementById('prog-label').textContent = Math.round(Math.min(pct, 95)) + '%';
   }
 
-  function setQuickReplies(opts) {
-    const qr = document.getElementById('quick-replies');
-    qr.innerHTML = '';
-    opts.forEach(o => {
-      const b = document.createElement('button');
-      b.className = 'qr-btn'; b.textContent = o;
-      b.onclick = () => { document.getElementById('chat-input').value = o; sendMessage(); };
-      qr.appendChild(b);
+  async function callClarive(messages) {
+    const response = await fetch('/api/claude', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        system: INTERVIEWER_SYSTEM,
+        messages: messages,
+        max_tokens: 400
+      })
     });
+    const data = await response.json();
+    return data.content.map(b => b.text || '').join('').trim();
   }
 
-  async function askNext() {
-    if (qIdx >= QUESTIONS.length) { endInterview(); return; }
+  async function startInterview() {
+    showScreen('s-interview');
+    document.getElementById('prog-wrap').style.display = 'flex';
     waiting = true;
     document.getElementById('send-btn').disabled = true;
-    document.getElementById('quick-replies').innerHTML = '';
     showTyping();
-    await delay(900 + Math.random() * 600);
-    removeTyping();
-    addMessage('ai', QUESTIONS[qIdx]);
-    setProgress((qIdx / QUESTIONS.length) * 100);
-    if (QR_SETS[qIdx]) setQuickReplies(QR_SETS[qIdx]);
+
+    try {
+      // First message — AI opens the interview
+      const aiOpening = await callClarive([
+        { role: 'user', content: 'Please begin the interview.' }
+      ]);
+      removeTyping();
+      addMessage('ai', aiOpening);
+      conversationHistory.push({ role: 'user', content: 'Please begin the interview.' });
+      conversationHistory.push({ role: 'assistant', content: aiOpening });
+      questionCount++;
+      setProgress(10);
+    } catch(e) {
+      removeTyping();
+      addMessage('ai', `Hello ${session.name.split(' ')[0]}, thank you for taking the time for this session. To start, can you walk me through the top 3 responsibilities that take most of your time in your role as ${session.role}?`);
+      conversationHistory.push({ role: 'user', content: 'Please begin the interview.' });
+      conversationHistory.push({ role: 'assistant', content: `Hello ${session.name.split(' ')[0]}, thank you for taking the time for this session. To start, can you walk me through the top 3 responsibilities that take most of your time in your role as ${session.role}?` });
+      questionCount++;
+    }
+
     waiting = false;
     document.getElementById('send-btn').disabled = false;
     document.getElementById('chat-input').focus();
   }
 
   async function sendMessage() {
-    if (waiting) return;
+    if (waiting || sessionComplete) return;
     const input = document.getElementById('chat-input');
     const text = input.value.trim();
     if (!text) return;
     input.value = ''; autoResize(input);
-    document.getElementById('quick-replies').innerHTML = '';
     addMessage('user', text);
-    history.push({ q: QUESTIONS[qIdx], a: text });
-    qIdx++;
-    await askNext();
+    conversationHistory.push({ role: 'user', content: text });
+
+    waiting = true;
+    document.getElementById('send-btn').disabled = true;
+    showTyping();
+    setProgress((questionCount / MAX_QUESTIONS) * 90);
+
+    try {
+      const aiResponse = await callClarive(conversationHistory);
+      removeTyping();
+
+      // Check if interview is complete
+      if (aiResponse.includes('INTERVIEW_COMPLETE')) {
+        sessionComplete = true;
+        addMessage('ai', aiResponse);
+        conversationHistory.push({ role: 'assistant', content: aiResponse });
+        setProgress(100);
+        await delay(2000);
+        showScreen('s-report');
+        generateReport();
+        return;
+      }
+
+      addMessage('ai', aiResponse);
+      conversationHistory.push({ role: 'assistant', content: aiResponse });
+      questionCount++;
+      setProgress((questionCount / MAX_QUESTIONS) * 90);
+    } catch(e) {
+      removeTyping();
+      addMessage('ai', 'Thank you for sharing that. Can you tell me more about any specific risks or challenges your successor should be aware of?');
+    }
+
+    waiting = false;
+    document.getElementById('send-btn').disabled = false;
+    document.getElementById('chat-input').focus();
   }
 
   function handleKey(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } }
   function autoResize(el) { el.style.height = 'auto'; el.style.height = Math.min(el.scrollHeight, 120) + 'px'; }
   function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-  async function endInterview() {
-    setProgress(100);
-    document.getElementById('send-btn').disabled = true;
-    addMessage('ai', `Thank you ${session.name.split(' ')[0]}. That was incredibly valuable. I'm now generating your knowledge transfer report — it will be delivered to ${session.mgr} shortly.`);
-    await delay(1800);
-    showScreen('s-report');
-    generateReport();
-  }
+  const genSteps = [
+    'Reading your responses...',
+    'Identifying critical knowledge...',
+    'Mapping knowledge gaps...',
+    'Prioritising risks...',
+    'Generating recommendations...',
+    'Finalising your report...'
+  ];
 
   async function generateReport() {
-    const systemPrompt = `You are an expert knowledge management consultant. Analyze this exit interview and produce a structured knowledge transfer report. Return ONLY valid JSON, no markdown, no backticks, no preamble:
-{"score":<number 60-98>,"summary":"<2 sentence executive summary>","critical_knowledge":[{"text":"...","priority":"high|medium|low"}],"knowledge_gaps":["..."],"recommendations":["..."]}`;
+    let stepIdx = 0;
+    const stepInterval = setInterval(() => {
+      if (stepIdx < genSteps.length) {
+        document.getElementById('gen-step').textContent = genSteps[stepIdx++];
+      }
+    }, 1800);
 
-    const transcript = history.map((h, i) => `Q${i + 1}: ${h.q}\nA: ${h.a}`).join('\n\n');
-    const userPrompt = `Employee: ${session.name}\nRole: ${session.role}\nSession type: ${reasonLabels[session.reason]}\nManager: ${session.mgr}\n\nInterview transcript:\n${transcript}`;
+    // Build full transcript from conversation
+    const transcript = conversationHistory
+      .filter(m => m.role !== 'system')
+      .map(m => `${m.role === 'assistant' ? 'Clarive AI' : session.name}: ${m.content}`)
+      .join('\n\n');
+
+    const reportSystem = `You are an expert knowledge management consultant writing a detailed knowledge transfer report. 
+You must be HYPER-SPECIFIC — extract exact names, processes, systems, risks mentioned in the transcript.
+Do NOT use generic language. Every item must reference something the person actually said.
+Return ONLY valid JSON, no markdown, no backticks:
+{
+  "score": <number 60-98 based on depth of answers>,
+  "summary": "<2-3 sentences that reference SPECIFIC things mentioned in the interview>",
+  "critical_knowledge": [
+    {"text": "<specific knowledge item referencing exact details from transcript>", "priority": "high|medium|low", "source": "<brief quote or reference from what they said>"}
+  ],
+  "knowledge_gaps": ["<specific gap identified from what was NOT covered or was vague>"],
+  "recommendations": ["<specific, actionable recommendation for ${session.mgr} based on what was said>"],
+  "key_contacts": ["<any specific names or relationships mentioned>"],
+  "immediate_actions": ["<things that must happen in first 30 days based on what was said>"]
+}`;
+
+    const reportPrompt = `Employee: ${session.name}
+Role: ${session.role}
+Manager: ${session.mgr}
+Session type: ${reasonLabels[session.reason]}
+
+Full interview transcript:
+${transcript}
+
+Generate a highly specific knowledge transfer report based ONLY on what was actually discussed above.`;
 
     let data;
     try {
-      const r = await fetch('https://api.anthropic.com/v1/messages', {
+      const r = await fetch('/api/claude', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, system: systemPrompt, messages: [{ role: 'user', content: userPrompt }] })
+        body: JSON.stringify({ system: reportSystem, messages: [{ role: 'user', content: reportPrompt }], max_tokens: 1500 })
       });
       const raw = await r.json();
       const txt = raw.content.map(b => b.text || '').join('').replace(/```json|```/g, '').trim();
       data = JSON.parse(txt);
-    } catch (e) {
-      data = {
-        score: 86,
-        summary: `${session.name} demonstrated strong institutional knowledge across key operational areas. Several undocumented processes and critical relationships were identified that require immediate attention before transition.`,
-        critical_knowledge: [
-          { text: "Vendor relationships and negotiation context with key external partners", priority: "high" },
-          { text: "Recurring planning rituals and informal stakeholder alignment process", priority: "high" },
-          { text: "Informal escalation paths that bypass standard procedures", priority: "medium" },
-          { text: "Historical context behind current strategic prioritisation decisions", priority: "medium" },
-          { text: "Onboarding nuances for new team members joining mid-project", priority: "low" }
-        ],
-        knowledge_gaps: [
-          "Technical documentation for legacy integration processes is incomplete",
-          "No written record of client communication preferences and history"
-        ],
-        recommendations: [
-          `Schedule a 2-hour deep-dive session with the incoming hire in the first week`,
-          "Document vendor contact protocols and relationship history before last day",
-          "Create a 30-60-90 day guide based on insights from this session"
-        ]
-      };
+    } catch(e) {
+      // Fallback using actual conversation content
+      data = buildFallbackReport(transcript);
     }
 
+    clearInterval(stepInterval);
     renderReport(data);
+  }
+
+  function buildFallbackReport(transcript) {
+    // Extract actual content from conversation for fallback
+    const userMessages = conversationHistory
+      .filter(m => m.role === 'user' && m.content !== 'Please begin the interview.')
+      .map(m => m.content);
+
+    return {
+      score: 78,
+      summary: `${session.name} completed a ${questionCount}-exchange knowledge capture session covering their role as ${session.role}. The session covered key responsibilities, relationships, processes and risks specific to their position.`,
+      critical_knowledge: userMessages.slice(0, 4).map((msg, i) => ({
+        text: msg.length > 120 ? msg.substring(0, 120) + '...' : msg,
+        priority: i < 2 ? 'high' : 'medium',
+        source: 'Direct response from interview'
+      })),
+      knowledge_gaps: ['Follow-up session recommended to document specific process details', 'Written documentation of key contacts and vendor relationships needed'],
+      recommendations: [`Schedule handover meeting between ${session.name} and successor`, 'Create written documentation for undocumented processes mentioned', 'Introduce successor to key contacts before last day'],
+      key_contacts: ['To be documented in follow-up session'],
+      immediate_actions: ['Review interview responses with HR team', 'Schedule successor onboarding based on insights captured']
+    };
   }
 
   function renderReport(data) {
     document.getElementById('report-generating').classList.add('hidden');
 
-    const ki = data.critical_knowledge.map(k =>
-      `<div class="k-item"><div class="k-dot ${k.priority}"></div><div class="k-text">${k.text}</div><div class="k-tag ${k.priority}">${k.priority}</div></div>`
-    ).join('');
+    const ki = (data.critical_knowledge || []).map(k => `
+      <div class="k-item">
+        <div class="k-dot ${k.priority}"></div>
+        <div class="k-text">
+          <div>${k.text}</div>
+          ${k.source ? `<div style="font-size:11px;color:var(--ink-light);margin-top:3px;font-style:italic">"${k.source}"</div>` : ''}
+        </div>
+        <div class="k-tag ${k.priority}">${k.priority}</div>
+      </div>`).join('');
 
-    const gi = data.knowledge_gaps.map(g => `<div class="gap-item">${g}</div>`).join('');
-    const ri = data.recommendations.map(r => `<div class="k-item"><div class="k-dot low"></div><div class="k-text">${r}</div></div>`).join('');
+    const gi = (data.knowledge_gaps || []).map(g => `<div class="gap-item">${g}</div>`).join('');
+    const ri = (data.recommendations || []).map(r => `<div class="k-item"><div class="k-dot low"></div><div class="k-text">${r}</div></div>`).join('');
+    const contacts = data.key_contacts && data.key_contacts.length ? `
+      <div class="r-section">
+        <div class="r-section-title">Key contacts identified</div>
+        ${data.key_contacts.map(c => `<div class="k-item"><div class="k-dot medium"></div><div class="k-text">${c}</div></div>`).join('')}
+      </div>` : '';
+    const actions = data.immediate_actions && data.immediate_actions.length ? `
+      <div class="r-section">
+        <div class="r-section-title">Immediate actions (first 30 days)</div>
+        ${data.immediate_actions.map(a => `<div class="k-item"><div class="k-dot high"></div><div class="k-text">${a}</div></div>`).join('')}
+      </div>` : '';
 
     document.getElementById('report-content').innerHTML = `
       <div class="report-header">
@@ -392,13 +471,14 @@
       <div class="r-section"><div class="r-section-title">Executive summary</div><p class="r-summary">${data.summary}</p></div>
       <div class="r-section"><div class="r-section-title">Critical knowledge captured</div>${ki}</div>
       <div class="r-section"><div class="r-section-title">Knowledge gaps identified</div>${gi}</div>
-      <div class="r-section"><div class="r-section-title">Recommendations for management</div>${ri}</div>
+      ${contacts}
+      ${actions}
+      <div class="r-section"><div class="r-section-title">Recommendations for ${session.mgr}</div>${ri}</div>
       <div class="report-footer">
         <p>This report has been delivered to <strong>${session.mgr}</strong></p>
         <div class="delivered-badge">✓ Report delivered successfully</div>
       </div>
     `;
-
     document.getElementById('report-content').classList.remove('hidden');
   }
 </script>
