@@ -329,7 +329,18 @@ Start with a warm welcome and your first question about their key responsibiliti
       setProgress((questionCount / MAX_QUESTIONS) * 90);
     } catch(e) {
       removeTyping();
-      addMessage('ai', 'Thank you for sharing that. Can you tell me more about any specific risks or challenges your successor should be aware of?');
+      // Rotate through fallback questions instead of repeating
+      const fallbacks = [
+        "Can you tell me more about the key relationships — specific people, suppliers or clients — that your successor will need to manage?",
+        "Are there any undocumented processes or informal workflows that only you know about?",
+        "What are the biggest risks in the first 90 days for someone new to this role?",
+        "Are there any active projects or sensitive ongoing situations to be aware of?",
+        "What would you tell your successor on their first day?"
+      ];
+      const fallbackMsg = fallbacks[Math.min(questionCount - 1, fallbacks.length - 1)];
+      addMessage('ai', fallbackMsg);
+      conversationHistory.push({ role: 'assistant', content: fallbackMsg });
+      questionCount++;
     }
 
     waiting = false;
