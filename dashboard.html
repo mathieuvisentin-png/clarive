@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clarive — Manager Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ink: #0e1a14; --ink-mid: #2d4036; --ink-light: #5a7366;
+    --sage: #1D9E75; --sage-light: #9FE1CB; --sage-pale: #E1F5EE;
+    --cream: #faf8f3; --cream-dark: #f0ece0; --white: #ffffff;
+    --border: rgba(14,26,20,0.1); --radius: 12px;
+  }
+  body { font-family: 'Outfit', sans-serif; background: var(--cream); color: var(--ink); min-height: 100vh; }
+
+  nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.25rem 3rem; background: rgba(250,248,243,0.95);
+    border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 10;
+  }
+  .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 400; color: var(--ink); text-decoration: none; }
+  .nav-logo em { color: var(--sage); font-style: italic; }
+  .nav-badge { font-size: 12px; font-weight: 500; padding: 4px 12px; border-radius: 20px; background: var(--sage-pale); color: var(--sage); border: 1px solid rgba(29,158,117,0.2); }
+
+  .main { max-width: 680px; margin: 0 auto; padding: 3rem 2rem; }
+
+  .page-title { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; font-weight: 300; color: var(--ink); margin-bottom: 0.5rem; letter-spacing: -0.5px; }
+  .page-title em { font-style: italic; color: var(--sage); }
+  .page-sub { font-size: 15px; color: var(--ink-light); margin-bottom: 2.5rem; line-height: 1.6; }
+
+  .flow-steps {
+    display: flex; gap: 0; border: 1px solid var(--border); border-radius: var(--radius);
+    overflow: hidden; margin-bottom: 2rem;
+  }
+  .flow-step { flex: 1; padding: 12px 8px; text-align: center; background: var(--cream-dark); border-right: 1px solid var(--border); }
+  .flow-step:last-child { border-right: none; }
+  .flow-step.active { background: var(--sage-pale); }
+  .flow-step .num { font-size: 18px; font-weight: 500; color: var(--sage); }
+  .flow-step .lbl { font-size: 11px; color: var(--ink-light); margin-top: 2px; }
+  .flow-step.active .lbl { color: var(--ink-mid); }
+
+  .card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; margin-bottom: 1.5rem; }
+  .card-title { font-size: 13px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; color: var(--ink-light); margin-bottom: 1.25rem; }
+
+  .fields { display: flex; flex-direction: column; gap: 1rem; }
+  .field label { display: block; font-size: 12px; font-weight: 500; color: var(--ink-light); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .field input, .field select, .field textarea { width: 100%; font-family: 'Outfit', sans-serif; font-size: 14px; }
+  .field textarea { resize: vertical; min-height: 80px; }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+  .upload-zone {
+    border: 1.5px dashed var(--border); border-radius: var(--radius); padding: 1.5rem;
+    text-align: center; cursor: pointer; transition: all 0.2s; background: var(--cream);
+  }
+  .upload-zone:hover { border-color: var(--sage); background: var(--sage-pale); }
+  .upload-zone.has-file { border-style: solid; border-color: var(--sage); background: var(--sage-pale); }
+  .upload-icon { font-size: 28px; margin-bottom: 8px; }
+  .upload-title { font-size: 14px; font-weight: 500; color: var(--ink); }
+  .upload-sub { font-size: 12px; color: var(--ink-light); margin-top: 4px; }
+
+  .btn-primary {
+    display: block; width: 100%; background: var(--ink); color: var(--cream);
+    border: none; border-radius: 40px; padding: 14px 24px;
+    font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 500;
+    cursor: pointer; transition: background 0.2s; text-align: center;
+  }
+  .btn-primary:hover { background: var(--sage); }
+  .btn-primary:disabled { background: var(--border); color: var(--ink-light); cursor: not-allowed; }
+
+  /* LINK SECTION */
+  .link-success {
+    background: var(--sage-pale); border: 1px solid rgba(29,158,117,0.3);
+    border-radius: var(--radius); padding: 1.5rem; text-align: center; margin-bottom: 1.5rem;
+    animation: fadeUp 0.4s ease;
+  }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+  .success-icon { font-size: 36px; margin-bottom: 0.75rem; }
+  .link-success h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.75rem; font-weight: 400; color: var(--ink); margin-bottom: 0.5rem; }
+  .link-success p { font-size: 14px; color: var(--ink-light); }
+
+  .link-box {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 12px 16px; margin-bottom: 1rem;
+  }
+  .link-url { flex: 1; font-size: 13px; color: var(--sage); font-family: monospace; word-break: break-all; }
+  .copy-btn {
+    font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 500;
+    padding: 8px 16px; border-radius: 20px; border: 1px solid var(--border);
+    background: var(--cream); color: var(--ink); cursor: pointer; white-space: nowrap; transition: all 0.15s;
+  }
+  .copy-btn:hover { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+  .copy-btn.copied { background: var(--sage); color: white; border-color: var(--sage); }
+
+  .share-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+  .share-btn {
+    display: flex; align-items: center; gap: 12px; padding: 14px 16px;
+    border: 1px solid var(--border); border-radius: var(--radius);
+    background: var(--white); cursor: pointer; transition: all 0.15s;
+    font-family: 'Outfit', sans-serif; text-decoration: none; color: var(--ink);
+  }
+  .share-btn:hover { border-color: var(--sage); background: var(--sage-pale); }
+  .share-icon { font-size: 22px; }
+  .share-label { font-size: 13px; font-weight: 500; color: var(--ink); }
+  .share-sub { font-size: 11px; color: var(--ink-light); margin-top: 1px; }
+
+  .session-meta {
+    background: var(--cream-dark); border: 1px solid var(--border);
+    border-radius: var(--radius); overflow: hidden; margin-bottom: 1.5rem;
+  }
+  .meta-title { padding: 10px 16px; font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.8px; color: var(--ink-light); border-bottom: 1px solid var(--border); }
+  .meta-row { display: flex; justify-content: space-between; padding: 10px 16px; border-bottom: 1px solid var(--border); font-size: 13px; }
+  .meta-row:last-child { border-bottom: none; }
+  .meta-label { color: var(--ink-light); }
+  .meta-val { font-weight: 500; color: var(--ink); }
+
+  .btn-secondary {
+    display: block; width: 100%; background: var(--cream-dark); color: var(--ink);
+    border: 1px solid var(--border); border-radius: 40px; padding: 12px 24px;
+    font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 500;
+    cursor: pointer; transition: background 0.2s; text-align: center; text-decoration: none; margin-top: 0.75rem;
+  }
+  .btn-secondary:hover { background: var(--border); }
+
+  .hidden { display: none; }
+
+  @media (max-width: 600px) {
+    nav { padding: 1rem 1.5rem; }
+    .main { padding: 2rem 1.25rem; }
+    .field-row { grid-template-columns: 1fr; }
+    .share-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">Cla<em>rive</em></a>
+  <div class="nav-badge">Manager dashboard</div>
+</nav>
+
+<div class="main">
+
+  <!-- SETUP FORM -->
+  <div id="setup-section">
+    <h1 class="page-title">Create a <em>knowledge</em> session</h1>
+    <p class="page-sub">Fill in the details below. We'll generate a private link to send directly to your employee.</p>
+
+    <div class="flow-steps">
+      <div class="flow-step active"><div class="num">1</div><div class="lbl">Setup</div></div>
+      <div class="flow-step"><div class="num">2</div><div class="lbl">Send link</div></div>
+      <div class="flow-step"><div class="num">3</div><div class="lbl">Employee interviews</div></div>
+      <div class="flow-step"><div class="num">4</div><div class="lbl">Report delivered</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Employee details</div>
+      <div class="fields">
+        <div class="field-row">
+          <div class="field">
+            <label>Employee name</label>
+            <input type="text" id="emp-name" placeholder="e.g. Sarah Chen" oninput="checkReady()"/>
+          </div>
+          <div class="field">
+            <label>Your name (manager)</label>
+            <input type="text" id="mgr-name" placeholder="e.g. Marc Dupont" oninput="checkReady()"/>
+          </div>
+        </div>
+        <div class="field">
+          <label>Role / position</label>
+          <input type="text" id="emp-role" placeholder="e.g. Senior Supply Chain Manager" oninput="checkReady()"/>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Session reason</label>
+            <select id="session-reason" onchange="checkReady()">
+              <option value="">Select reason...</option>
+              <option value="offboarding">Employee offboarding</option>
+              <option value="merger">Merger & acquisition</option>
+              <option value="transition">Role transition</option>
+              <option value="succession">Succession planning</option>
+              <option value="critical">Critical knowledge capture</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Employee email</label>
+            <input type="email" id="emp-email" placeholder="sarah@company.com" oninput="checkReady()"/>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Context document (optional)</div>
+      <div class="upload-zone" id="upload-zone" onclick="document.getElementById('file-input').click()">
+        <input type="file" id="file-input" style="display:none" accept=".pdf,.doc,.docx,.txt" onchange="handleFile(this)">
+        <div class="upload-icon">📄</div>
+        <div class="upload-title" id="upload-title">Upload job description or org chart</div>
+        <div class="upload-sub" id="upload-sub">PDF, Word or text — helps AI tailor the interview</div>
+      </div>
+    </div>
+
+    <button class="btn-primary" id="gen-btn" onclick="generateSession()" disabled>
+      Generate session link →
+    </button>
+  </div>
+
+  <!-- LINK SECTION -->
+  <div id="link-section" class="hidden">
+    <div class="link-success">
+      <div class="success-icon">✓</div>
+      <h2>Session link ready</h2>
+      <p>Send this private link to <strong id="ls-empname"></strong> — they click it and start their AI interview.</p>
+    </div>
+
+    <div class="session-meta">
+      <div class="meta-title">Session details</div>
+      <div class="meta-row"><span class="meta-label">Employee</span><span class="meta-val" id="ls-name"></span></div>
+      <div class="meta-row"><span class="meta-label">Role</span><span class="meta-val" id="ls-role"></span></div>
+      <div class="meta-row"><span class="meta-label">Manager</span><span class="meta-val" id="ls-mgr"></span></div>
+      <div class="meta-row"><span class="meta-label">Session type</span><span class="meta-val" id="ls-reason"></span></div>
+      <div class="meta-row"><span class="meta-label">Link expires</span><span class="meta-val">48 hours</span></div>
+      <div class="meta-row"><span class="meta-label">Status</span><span class="meta-val" style="color:var(--sage)">● Waiting for employee</span></div>
+    </div>
+
+    <div class="link-box">
+      <div class="link-url" id="ls-url"></div>
+      <button class="copy-btn" id="copy-btn" onclick="copyLink()">Copy link</button>
+    </div>
+
+    <div class="share-row">
+      <button class="share-btn" onclick="shareEmail()">
+        <div class="share-icon">📧</div>
+        <div><div class="share-label">Send by email</div><div class="share-sub">Pre-written message ready</div></div>
+      </button>
+      <button class="share-btn" onclick="shareWhatsApp()">
+        <div class="share-icon">💬</div>
+        <div><div class="share-label">Send via WhatsApp</div><div class="share-sub">Quick personal share</div></div>
+      </button>
+    </div>
+
+    <a href="#" id="preview-link" class="btn-primary" onclick="previewSession(event)">
+      👁 Preview what your employee sees →
+    </a>
+    <button class="btn-secondary" onclick="resetForm()">← Create another session</button>
+  </div>
+
+</div>
+
+<script>
+  const reasonLabels = {
+    offboarding: 'Employee Offboarding', merger: 'Merger & Acquisition',
+    transition: 'Role Transition', succession: 'Succession Planning', critical: 'Critical Knowledge Capture'
+  };
+
+  let session = {};
+  let sessionLink = '';
+
+  function checkReady() {
+    const ok = document.getElementById('emp-name').value.trim() &&
+               document.getElementById('emp-role').value.trim() &&
+               document.getElementById('mgr-name').value.trim() &&
+               document.getElementById('session-reason').value;
+    document.getElementById('gen-btn').disabled = !ok;
+  }
+
+  function handleFile(input) {
+    if (input.files && input.files[0]) {
+      document.getElementById('upload-zone').classList.add('has-file');
+      document.getElementById('upload-title').textContent = input.files[0].name;
+      document.getElementById('upload-sub').textContent = 'Document loaded — AI will use this for context ✓';
+    }
+  }
+
+  function generateSession() {
+    session = {
+      name: document.getElementById('emp-name').value.trim(),
+      role: document.getElementById('emp-role').value.trim(),
+      mgr: document.getElementById('mgr-name').value.trim(),
+      email: document.getElementById('emp-email').value.trim(),
+      reason: document.getElementById('session-reason').value
+    };
+
+    const token = Math.random().toString(36).substr(2, 9).toUpperCase();
+    sessionLink = `https://clarive.ai/session?t=${token}&n=${encodeURIComponent(session.name)}&r=${encodeURIComponent(session.role)}&m=${encodeURIComponent(session.mgr)}&s=${session.reason}`;
+
+    document.getElementById('ls-empname').textContent = session.name;
+    document.getElementById('ls-name').textContent = session.name;
+    document.getElementById('ls-role').textContent = session.role;
+    document.getElementById('ls-mgr').textContent = session.mgr;
+    document.getElementById('ls-reason').textContent = reasonLabels[session.reason] || session.reason;
+    document.getElementById('ls-url').textContent = sessionLink;
+
+    document.getElementById('setup-section').classList.add('hidden');
+    document.getElementById('link-section').classList.remove('hidden');
+    window.scrollTo(0, 0);
+  }
+
+  function copyLink() {
+    navigator.clipboard.writeText(sessionLink).catch(() => {});
+    const btn = document.getElementById('copy-btn');
+    btn.textContent = '✓ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy link'; btn.classList.remove('copied'); }, 2500);
+  }
+
+  function shareEmail() {
+    const subject = encodeURIComponent(`Clarive Knowledge Session — ${session.name}`);
+    const body = encodeURIComponent(`Hi ${session.name},\n\nI've set up a confidential knowledge capture session for your role transition.\n\nPlease click the link below to start your private AI interview — it takes about 20–40 minutes at your own pace:\n\n${sessionLink}\n\nThis is a completely private conversation. No manager is present. Your answers are used solely to create a knowledge transfer report.\n\nThe link expires in 48 hours.\n\nThank you,\n${session.mgr}`);
+    window.open(`mailto:${session.email || ''}?subject=${subject}&body=${body}`);
+  }
+
+  function shareWhatsApp() {
+    const msg = encodeURIComponent(`Hi ${session.name} 👋\n\nI've set up your Clarive knowledge capture session. It's a private AI interview — no manager present, completely confidential.\n\nClick here to start (takes 20–40 min):\n${sessionLink}\n\nLink valid for 48 hours. Thank you! 🙏`);
+    window.open(`https://wa.me/?text=${msg}`);
+  }
+
+  function previewSession(e) {
+    e.preventDefault();
+    const params = new URLSearchParams({
+      n: session.name, r: session.role, m: session.mgr, s: session.reason, preview: '1'
+    });
+    window.location.href = `/session.html?${params.toString()}`;
+  }
+
+  function resetForm() {
+    document.getElementById('setup-section').classList.remove('hidden');
+    document.getElementById('link-section').classList.add('hidden');
+    document.getElementById('emp-name').value = '';
+    document.getElementById('emp-role').value = '';
+    document.getElementById('mgr-name').value = '';
+    document.getElementById('emp-email').value = '';
+    document.getElementById('session-reason').value = '';
+    document.getElementById('gen-btn').disabled = true;
+    document.getElementById('upload-zone').classList.remove('has-file');
+    document.getElementById('upload-title').textContent = 'Upload job description or org chart';
+    document.getElementById('upload-sub').textContent = 'PDF, Word or text — helps AI tailor the interview';
+  }
+</script>
+</body>
+</html>
