@@ -8,125 +8,165 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --ink: #0e1a14; --ink-mid: #2d4036; --ink-light: #5a7366;
-    --sage: #1D9E75; --sage-light: #9FE1CB; --sage-pale: #E1F5EE;
-    --cream: #faf8f3; --cream-dark: #f0ece0; --white: #ffffff;
-    --border: rgba(14,26,20,0.1); --radius: 12px;
-  }
-  body { font-family: 'Outfit', sans-serif; background: var(--cream); color: var(--ink); min-height: 100vh; display: flex; flex-direction: column; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --ink: #0e1a14; --ink-mid: #2d4036; --ink-light: #5a7366;
+  --sage: #1D9E75; --sage-light: #9FE1CB; --sage-pale: #E1F5EE;
+  --cream: #faf8f3; --cream-dark: #f0ece0; --white: #ffffff;
+  --border: rgba(14,26,20,0.1); --radius: 12px;
+}
+body { font-family: 'Outfit', sans-serif; background: var(--cream); color: var(--ink); min-height: 100vh; display: flex; flex-direction: column; }
+.topbar { display: flex; align-items: center; justify-content: space-between; padding: 0.875rem 1.5rem; border-bottom: 1px solid var(--border); background: rgba(250,248,243,0.97); position: sticky; top: 0; z-index: 10; }
+.logo { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 400; color: var(--ink); text-decoration: none; }
+.logo em { color: var(--sage); font-style: italic; }
+.prog-wrap { display: flex; align-items: center; gap: 8px; }
+.prog-bar { width: 90px; height: 3px; background: var(--cream-dark); border-radius: 2px; overflow: hidden; }
+.prog-fill { height: 100%; background: var(--sage); border-radius: 2px; transition: width 0.4s ease; }
+.prog-label { font-size: 11px; color: var(--ink-light); }
+.screen { display: none; flex: 1; flex-direction: column; }
+.screen.active { display: flex; }
 
-  .topbar { display: flex; align-items: center; justify-content: space-between; padding: 1rem 2rem; border-bottom: 1px solid var(--border); background: rgba(250,248,243,0.95); position: sticky; top: 0; z-index: 10; }
-  .logo { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 400; color: var(--ink); text-decoration: none; }
-  .logo em { color: var(--sage); font-style: italic; }
-  .prog-wrap { display: flex; align-items: center; gap: 8px; }
-  .prog-bar { width: 100px; height: 4px; background: var(--cream-dark); border-radius: 2px; overflow: hidden; }
-  .prog-fill { height: 100%; background: var(--sage); border-radius: 2px; transition: width 0.4s ease; }
-  .prog-label { font-size: 12px; color: var(--ink-light); }
+/* WELCOME */
+.welcome-wrap { max-width: 520px; margin: 0 auto; padding: 2.5rem 1.5rem; flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 1.25rem; }
+.welcome-hello { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 300; color: var(--ink); line-height: 1.1; }
+.welcome-hello em { font-style: italic; color: var(--sage); }
+.welcome-from { font-size: 13px; color: var(--ink-light); margin-top: 4px; }
+.info-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; }
+.info-card h3 { font-size: 13px; font-weight: 500; color: var(--ink); margin-bottom: 0.875rem; }
+.info-item { display: flex; align-items: flex-start; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 13px; color: var(--ink-mid); }
+.info-item:last-child { border-bottom: none; padding-bottom: 0; }
+.info-item span { color: var(--sage); font-weight: 500; flex-shrink: 0; }
+.privacy-card { background: var(--sage-pale); border: 1px solid rgba(29,158,117,0.2); border-radius: var(--radius); padding: 1rem 1.25rem; display: flex; gap: 10px; }
+.privacy-card p { font-size: 12px; color: var(--ink-mid); line-height: 1.6; }
+.mode-choice { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.mode-btn { padding: 1.1rem 0.75rem; border-radius: var(--radius); border: 1.5px solid var(--border); background: var(--white); cursor: pointer; text-align: center; transition: all 0.2s; font-family: 'Outfit', sans-serif; }
+.mode-btn:hover { border-color: var(--sage); background: var(--sage-pale); }
+.mode-btn.featured { background: var(--ink); border-color: var(--ink); color: var(--cream); }
+.mode-btn.featured:hover { background: var(--sage); border-color: var(--sage); }
+.mode-icon { font-size: 26px; margin-bottom: 6px; }
+.mode-label { font-size: 13px; font-weight: 500; display: block; }
+.mode-sub { font-size: 11px; color: var(--ink-light); margin-top: 3px; display: block; }
+.mode-btn.featured .mode-sub { color: rgba(250,248,243,0.55); }
 
-  .screen { display: none; flex: 1; flex-direction: column; }
-  .screen.active { display: flex; }
+/* VIDEO CALL */
+.call-wrap { flex: 1; display: flex; flex-direction: column; background: #0a1510; }
+.call-stage { flex: 1; display: flex; align-items: center; justify-content: center; position: relative; min-height: 300px; padding: 1.5rem 1rem 5rem; }
 
-  /* WELCOME */
-  .welcome-wrap { max-width: 560px; margin: 0 auto; padding: 3rem 2rem; flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 1.5rem; }
-  .welcome-hello { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; font-weight: 300; color: var(--ink); line-height: 1.1; }
-  .welcome-hello em { font-style: italic; color: var(--sage); }
-  .welcome-from { font-size: 14px; color: var(--ink-light); margin-top: 0.5rem; }
-  .info-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; }
-  .info-card h3 { font-size: 14px; font-weight: 500; color: var(--ink); margin-bottom: 1rem; }
-  .info-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 14px; color: var(--ink-mid); }
-  .info-item:last-child { border-bottom: none; padding-bottom: 0; }
-  .info-item span { color: var(--sage); font-weight: 500; flex-shrink: 0; }
-  .privacy-card { background: var(--sage-pale); border: 1px solid rgba(29,158,117,0.2); border-radius: var(--radius); padding: 1.25rem; display: flex; gap: 12px; align-items: flex-start; }
-  .privacy-card p { font-size: 13px; color: var(--ink-mid); line-height: 1.6; }
-  .btn-start { background: var(--ink); color: var(--cream); border: none; border-radius: 40px; padding: 15px 32px; font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 500; cursor: pointer; transition: background 0.2s; width: 100%; }
-  .btn-start:hover { background: var(--sage); }
+/* Avatar */
+.avatar-group { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.avatar-frame { width: 164px; height: 164px; border-radius: 50%; position: relative; }
+.avatar-rings { position: absolute; inset: -18px; pointer-events: none; }
+.avatar-ring { position: absolute; inset: 0; border-radius: 50%; border: 1.5px solid transparent; }
+.avatar-rings.on .avatar-ring:nth-child(1) { animation: ring 1.6s 0s infinite; }
+.avatar-rings.on .avatar-ring:nth-child(2) { animation: ring 1.6s 0.53s infinite; }
+.avatar-rings.on .avatar-ring:nth-child(3) { animation: ring 1.6s 1.06s infinite; }
+@keyframes ring { 0% { transform:scale(0.82); border-color:rgba(29,158,117,0.55); } 100% { transform:scale(1.25); border-color:rgba(29,158,117,0); } }
+.avatar-face { width: 100%; height: 100%; border-radius: 50%; background: radial-gradient(circle at 38% 36%, #25b884, #0a4030 70%); border: 3px solid rgba(29,158,117,0.45); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 9px; }
+.f-eyes { display: flex; gap: 26px; }
+.f-eye { width: 13px; height: 13px; border-radius: 50%; background: white; position: relative; }
+.f-eye::after { content:''; width:6px; height:6px; border-radius:50%; background:rgba(5,30,20,0.9); position:absolute; top:3px; left:3.5px; }
+.f-nose { width: 4px; height: 4px; border-radius: 50%; background: rgba(255,255,255,0.35); }
+.f-mouth { width: 34px; height: 6px; border: 2px solid white; border-top: none; border-radius: 0 0 17px 17px; transition: all 0.1s; }
+.f-mouth.speak { animation: speak 0.13s infinite alternate; }
+.f-mouth.think { width: 16px; height: 2px; border-radius: 2px; border: 2px solid rgba(255,255,255,0.4); border-top: 2px solid rgba(255,255,255,0.4); }
+@keyframes speak { 0%{height:4px;width:30px} 33%{height:11px;width:36px} 66%{height:6px;width:28px} 100%{height:14px;width:38px} }
 
-  /* INTERVIEW */
-  .interview-wrap { display: flex; flex-direction: column; flex: 1; max-width: 700px; width: 100%; margin: 0 auto; }
-  .chat-area { flex: 1; overflow-y: auto; padding: 1.5rem 2rem; display: flex; flex-direction: column; gap: 1rem; min-height: 300px; }
-  .msg { display: flex; gap: 10px; align-items: flex-start; animation: msgIn 0.3s ease; }
-  @keyframes msgIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-  .msg.user { flex-direction: row-reverse; }
-  .msg-avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500; flex-shrink: 0; }
-  .msg.ai .msg-avatar { background: var(--sage-pale); color: var(--sage); }
-  .msg.user .msg-avatar { background: var(--cream-dark); color: var(--ink-light); }
-  .msg-bubble { max-width: 75%; padding: 12px 16px; border-radius: 18px; font-size: 14px; line-height: 1.6; }
-  .msg.ai .msg-bubble { background: var(--white); border: 1px solid var(--border); border-bottom-left-radius: 4px; color: var(--ink); }
-  .msg.user .msg-bubble { background: var(--ink); color: var(--cream); border-bottom-right-radius: 4px; }
-  .typing { display: flex; gap: 4px; align-items: center; padding: 4px 0; }
-  .t-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ink-light); animation: tdot 1.2s infinite; }
-  .t-dot:nth-child(2) { animation-delay: 0.2s; }
-  .t-dot:nth-child(3) { animation-delay: 0.4s; }
-  @keyframes tdot { 0%,60%,100% { opacity: 0.3; } 30% { opacity: 1; } }
-  .input-area { padding: 1rem 2rem 1.5rem; border-top: 1px solid var(--border); display: flex; gap: 10px; align-items: flex-end; background: var(--cream); }
-  .chat-input { flex: 1; font-family: 'Outfit', sans-serif; font-size: 14px; resize: none; min-height: 46px; max-height: 120px; border-radius: var(--radius); padding: 12px 16px; line-height: 1.5; border: 1px solid var(--border); background: var(--white); color: var(--ink); outline: none; transition: border-color 0.2s; }
-  .chat-input:focus { border-color: var(--sage); }
-  .chat-input::placeholder { color: var(--ink-light); }
-  .send-btn { width: 46px; height: 46px; border-radius: 50%; background: var(--ink); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.2s; }
-  .send-btn:hover { background: var(--sage); }
-  .send-btn:disabled { background: var(--border); cursor: not-allowed; }
-  .send-btn svg { width: 18px; height: 18px; fill: var(--cream); }
+.avatar-chip { display: flex; align-items: center; gap: 7px; background: rgba(29,158,117,0.14); border: 1px solid rgba(29,158,117,0.25); border-radius: 20px; padding: 5px 14px; }
+.chip-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--sage); animation: blink 2s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.25} }
+.chip-text { font-size: 12px; color: rgba(250,248,243,0.8); font-weight: 500; }
 
-  /* REPORT */
-  .report-wrap { max-width: 680px; margin: 0 auto; padding: 2rem; flex: 1; }
-  .report-generating { text-align: center; padding: 4rem 2rem; }
-  .spinner { width: 40px; height: 40px; border: 3px solid var(--border); border-top-color: var(--sage); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 1.5rem; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .report-generating p { font-size: 15px; color: var(--ink-light); line-height: 1.8; }
-  .gen-step { font-size: 13px; color: var(--sage); margin-top: 0.5rem; }
+/* Speech bubble */
+.speech-bubble { position: absolute; bottom: 64px; left: 50%; transform: translateX(-50%); width: calc(100% - 2rem); max-width: 460px; background: rgba(8,50,33,0.7); border: 1px solid rgba(29,158,117,0.22); border-radius: 16px; padding: 12px 16px; backdrop-filter: blur(10px); }
+.speech-text { font-size: 13px; color: rgba(250,248,243,0.92); line-height: 1.65; text-align: center; min-height: 18px; }
+.speech-text.cur::after { content:'▋'; color:var(--sage); animation:cur 0.7s infinite; }
+@keyframes cur { 0%,100%{opacity:1} 50%{opacity:0} }
 
-  .report-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
-  .report-title-text { font-family: 'Cormorant Garamond', serif; font-size: 1.75rem; font-weight: 300; color: var(--ink); }
-  .report-meta { font-size: 12px; color: var(--ink-light); margin-top: 4px; }
-  .score-box { text-align: center; background: var(--sage-pale); border-radius: var(--radius); padding: 12px 18px; min-width: 80px; }
-  .score-num { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; font-weight: 300; color: var(--sage); line-height: 1; }
-  .score-label { font-size: 11px; color: var(--sage); font-weight: 500; margin-top: 2px; }
+/* Self view */
+.self-view { position: absolute; top: 12px; right: 12px; width: 86px; height: 66px; border-radius: 9px; background: #182820; border: 1.5px solid rgba(255,255,255,0.09); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; }
+.self-init { width: 30px; height: 30px; border-radius: 50%; background: rgba(29,158,117,0.22); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: var(--sage); }
+.self-name { font-size: 8px; color: rgba(255,255,255,0.35); }
 
-  .r-section { margin-bottom: 1.75rem; }
-  .r-section-title { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; color: var(--ink-light); margin-bottom: 10px; }
-  .r-summary { font-size: 14px; line-height: 1.8; color: var(--ink-mid); }
-  .k-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 14px; background: var(--white); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 6px; }
-  .k-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
-  .k-dot.high { background: #E24B4A; }
-  .k-dot.medium { background: #EF9F27; }
-  .k-dot.low { background: var(--sage); }
-  .k-text { flex: 1; font-size: 13px; color: var(--ink); line-height: 1.5; }
-  .k-tag { font-size: 10px; font-weight: 500; padding: 2px 8px; border-radius: 10px; flex-shrink: 0; }
-  .k-tag.high { background: #FCEBEB; color: #A32D2D; }
-  .k-tag.medium { background: #FAEEDA; color: #854F0B; }
-  .k-tag.low { background: var(--sage-pale); color: #085041; }
-  .gap-item { font-size: 13px; color: var(--ink); padding: 9px 14px; border-left: 2px solid #EF9F27; background: #FAEEDA; border-radius: 0 8px 8px 0; margin-bottom: 6px; }
-  .report-footer { padding: 1.5rem 0; border-top: 1px solid var(--border); margin-top: 2rem; text-align: center; }
-  .report-footer p { font-size: 13px; color: var(--ink-light); margin-bottom: 1rem; }
-  .delivered-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--sage-pale); color: var(--sage); font-size: 13px; font-weight: 500; padding: 8px 18px; border-radius: 20px; border: 1px solid rgba(29,158,117,0.2); }
-  /* PDF & VOICE BUTTONS */
-  .report-actions { display: flex; gap: 10px; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); flex-wrap: wrap; }
-  .btn-pdf { display: flex; align-items: center; gap: 8px; background: var(--ink); color: var(--cream); border: none; border-radius: 40px; padding: 12px 24px; font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; transition: background 0.2s; flex: 1; justify-content: center; }
-  .btn-pdf:hover { background: var(--sage); }
-  .btn-print { display: flex; align-items: center; gap: 8px; background: var(--cream-dark); color: var(--ink); border: 1px solid var(--border); border-radius: 40px; padding: 12px 24px; font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; transition: background 0.2s; flex: 1; justify-content: center; }
-  .btn-print:hover { background: var(--border); }
+/* Controls */
+.call-controls { background: rgba(6,14,10,0.97); border-top: 1px solid rgba(255,255,255,0.04); padding: 0.625rem 1rem 1rem; display: flex; flex-direction: column; gap: 7px; }
+.ctrl-progress { display: flex; align-items: center; gap: 8px; }
+.ctrl-prog-bar { flex: 1; height: 2px; background: rgba(255,255,255,0.07); border-radius: 1px; overflow: hidden; }
+.ctrl-prog-fill { height: 100%; background: var(--sage); border-radius: 1px; transition: width 0.4s; }
+.ctrl-prog-label { font-size: 10px; color: rgba(255,255,255,0.28); min-width: 26px; text-align: right; }
+.ctrl-row { display: flex; gap: 8px; align-items: flex-end; }
+.ctrl-input { flex: 1; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.11); border-radius: 10px; padding: 9px 13px; font-family: 'Outfit', sans-serif; font-size: 13px; color: rgba(250,248,243,0.9); resize: none; min-height: 40px; max-height: 88px; line-height: 1.4; transition: border-color 0.2s; }
+.ctrl-input:focus { outline: none; border-color: rgba(29,158,117,0.4); }
+.ctrl-input::placeholder { color: rgba(255,255,255,0.22); }
+.ctrl-input:disabled { opacity: 0.35; }
+.ctrl-btn { width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 17px; transition: all 0.2s; flex-shrink: 0; border: none; }
+.ctrl-btn.mic { background: rgba(29,158,117,0.14); border: 1.5px solid rgba(29,158,117,0.3); }
+.ctrl-btn.mic:hover { background: rgba(29,158,117,0.28); }
+.ctrl-btn.mic.on { background: #c0392b; border-color: #c0392b; animation: micpulse 0.85s infinite; }
+@keyframes micpulse { 0%,100%{box-shadow:0 0 0 0 rgba(192,57,43,0.4)} 50%{box-shadow:0 0 0 7px rgba(192,57,43,0)} }
+.ctrl-btn.send { background: var(--sage); }
+.ctrl-btn.send:hover { background: #0F6E56; }
+.ctrl-btn.send:disabled { background: rgba(255,255,255,0.09); cursor: not-allowed; }
+.ctrl-btn.send svg { width: 16px; height: 16px; fill: white; }
+.ctrl-status { text-align: center; font-size: 10px; color: rgba(255,255,255,0.22); }
 
-  /* VOICE MODE */
-  .voice-banner { background: var(--sage-pale); border: 1px solid rgba(29,158,117,0.3); border-radius: var(--radius); padding: 1rem 1.25rem; margin: 1rem 2rem 0; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
-  .voice-banner p { font-size: 13px; color: var(--ink-mid); }
-  .voice-banner strong { color: var(--sage); }
-  .btn-voice { background: var(--sage); color: white; border: none; border-radius: 20px; padding: 8px 18px; font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap; transition: background 0.2s; }
-  .btn-voice:hover { background: #0F6E56; }
-  .voice-active { background: var(--ink); border-radius: var(--radius); padding: 1.5rem 2rem; margin: 1rem 2rem 0; text-align: center; }
-  .voice-orb { width: 80px; height: 80px; border-radius: 50%; background: var(--sage); margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; font-size: 32px; animation: orbPulse 2s infinite; }
-  @keyframes orbPulse { 0%,100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(29,158,117,0.4); } 50% { transform: scale(1.05); box-shadow: 0 0 0 12px rgba(29,158,117,0); } }
-  .voice-orb.listening { background: #E24B4A; animation: orbPulse 0.8s infinite; }
-  .voice-status { font-size: 14px; color: rgba(250,248,243,0.7); margin-bottom: 0.5rem; }
-  .voice-transcript { font-size: 13px; color: rgba(250,248,243,0.5); font-style: italic; min-height: 20px; }
-  .btn-stop-voice { background: rgba(255,255,255,0.1); color: var(--cream); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 8px 18px; font-family: 'Outfit', sans-serif; font-size: 13px; cursor: pointer; margin-top: 1rem; }
+/* TEXT INTERVIEW */
+.text-wrap { display: flex; flex-direction: column; flex: 1; max-width: 660px; width: 100%; margin: 0 auto; }
+.chat-area { flex: 1; overflow-y: auto; padding: 1.25rem 1.5rem; display: flex; flex-direction: column; gap: 0.875rem; min-height: 280px; }
+.msg { display: flex; gap: 8px; align-items: flex-start; animation: msgin 0.25s ease; }
+@keyframes msgin { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
+.msg.user { flex-direction: row-reverse; }
+.msg-av { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 500; flex-shrink: 0; }
+.msg.ai .msg-av { background: var(--sage-pale); color: var(--sage); }
+.msg.user .msg-av { background: var(--cream-dark); color: var(--ink-light); }
+.msg-bub { max-width: 76%; padding: 10px 14px; border-radius: 16px; font-size: 13px; line-height: 1.6; }
+.msg.ai .msg-bub { background: var(--white); border: 1px solid var(--border); border-bottom-left-radius: 3px; color: var(--ink); }
+.msg.user .msg-bub { background: var(--ink); color: var(--cream); border-bottom-right-radius: 3px; }
+.typ { display: flex; gap: 3px; align-items: center; padding: 2px 0; }
+.td { width: 5px; height: 5px; border-radius: 50%; background: var(--ink-light); animation: tdot 1.2s infinite; }
+.td:nth-child(2){animation-delay:.2s} .td:nth-child(3){animation-delay:.4s}
+@keyframes tdot { 0%,60%,100%{opacity:.3} 30%{opacity:1} }
+.text-input-area { padding: 0.875rem 1.5rem 1.25rem; border-top: 1px solid var(--border); display: flex; gap: 8px; align-items: flex-end; }
+.text-inp { flex: 1; font-family: 'Outfit', sans-serif; font-size: 13px; resize: none; min-height: 42px; max-height: 110px; border-radius: 10px; padding: 10px 14px; line-height: 1.5; border: 1px solid var(--border); background: var(--white); color: var(--ink); outline: none; transition: border-color 0.2s; }
+.text-inp:focus { border-color: var(--sage); }
+.text-inp::placeholder { color: var(--ink-light); }
+.send-text { width: 42px; height: 42px; border-radius: 50%; background: var(--ink); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.2s; }
+.send-text:hover { background: var(--sage); }
+.send-text:disabled { background: var(--border); cursor: not-allowed; }
+.send-text svg { width: 16px; height: 16px; fill: var(--cream); }
 
-  @media print {
-    .topbar, .report-actions, .voice-banner { display: none !important; }
-    body { background: white; }
-    .report-wrap { padding: 0; }
-  }
+/* REPORT */
+.report-wrap { max-width: 660px; margin: 0 auto; padding: 1.75rem 1.5rem; flex: 1; }
+.report-gen { text-align: center; padding: 3.5rem 1.5rem; }
+.spin { width: 36px; height: 36px; border: 2.5px solid var(--border); border-top-color: var(--sage); border-radius: 50%; animation: spn 0.8s linear infinite; margin: 0 auto 1.25rem; }
+@keyframes spn { to{transform:rotate(360deg)} }
+.report-gen p { font-size: 14px; color: var(--ink-light); line-height: 1.8; }
+.gen-step { font-size: 12px; color: var(--sage); margin-top: 0.5rem; }
+.rpt-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 1.75rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); }
+.rpt-title { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 300; color: var(--ink); }
+.rpt-meta { font-size: 11px; color: var(--ink-light); margin-top: 3px; }
+.score-box { text-align: center; background: var(--sage-pale); border-radius: var(--radius); padding: 10px 16px; min-width: 72px; }
+.score-num { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 300; color: var(--sage); line-height: 1; }
+.score-lbl { font-size: 10px; color: var(--sage); font-weight: 500; margin-top: 2px; }
+.r-sec { margin-bottom: 1.5rem; }
+.r-sec-title { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; color: var(--ink-light); margin-bottom: 8px; }
+.r-summary { font-size: 13px; line-height: 1.8; color: var(--ink-mid); }
+.ki { display: flex; align-items: flex-start; gap: 8px; padding: 9px 12px; background: var(--white); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 5px; }
+.kdot { width: 7px; height: 7px; border-radius: 50%; margin-top: 4px; flex-shrink: 0; }
+.kdot.high{background:#E24B4A} .kdot.medium{background:#EF9F27} .kdot.low{background:var(--sage)}
+.ktext { flex: 1; font-size: 12px; color: var(--ink); line-height: 1.5; }
+.ktag { font-size: 10px; font-weight: 500; padding: 2px 7px; border-radius: 8px; flex-shrink: 0; }
+.ktag.high{background:#FCEBEB;color:#A32D2D} .ktag.medium{background:#FAEEDA;color:#854F0B} .ktag.low{background:var(--sage-pale);color:#085041}
+.gap-i { font-size: 12px; color: var(--ink); padding: 8px 12px; border-left: 2px solid #EF9F27; background: #FAEEDA; border-radius: 0 7px 7px 0; margin-bottom: 5px; }
+.rpt-footer { padding: 1.25rem 0; border-top: 1px solid var(--border); margin-top: 1.5rem; text-align: center; }
+.rpt-footer p { font-size: 12px; color: var(--ink-light); margin-bottom: 0.875rem; }
+.del-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--sage-pale); color: var(--sage); font-size: 12px; font-weight: 500; padding: 7px 16px; border-radius: 20px; border: 1px solid rgba(29,158,117,0.2); }
+.rpt-actions { display: flex; gap: 8px; margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--border); }
+.btn-pdf { display: flex; align-items: center; gap: 7px; background: var(--ink); color: var(--cream); border: none; border-radius: 40px; padding: 11px 20px; font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; transition: background 0.2s; flex: 1; justify-content: center; }
+.btn-pdf:hover{background:var(--sage)} .btn-pdf:disabled{opacity:.6;cursor:not-allowed}
+.btn-print { display: flex; align-items: center; gap: 7px; background: var(--cream-dark); color: var(--ink); border: 1px solid var(--border); border-radius: 40px; padding: 11px 20px; font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; flex: 1; justify-content: center; }
+.btn-print:hover{background:var(--border)}
+.hidden{display:none!important}
+@media print { .topbar,.rpt-actions,#s-welcome,#s-video,#s-text{display:none!important} #s-report{display:block!important} body{background:white} }
 </style>
 </head>
 <body>
@@ -148,37 +188,89 @@
     </div>
     <div class="info-card">
       <h3>What happens in this session</h3>
-      <div class="info-item"><span>→</span>A private AI conversation about your role and knowledge</div>
-      <div class="info-item"><span>→</span>The AI will ask follow-up questions to go deeper on important topics</div>
-      <div class="info-item"><span>→</span>Takes about 20–40 minutes at your own pace</div>
-      <div class="info-item"><span>→</span>No manager present — just you and the AI</div>
-      <div class="info-item"><span>→</span>Your answers generate a specific, detailed knowledge transfer report</div>
+      <div class="info-item"><span>→</span>A private AI interview about your role and institutional knowledge</div>
+      <div class="info-item"><span>→</span>The AI listens and asks follow-up questions based on your answers</div>
+      <div class="info-item"><span>→</span>20–40 minutes at your own pace — completely confidential</div>
     </div>
     <div class="privacy-card">
-      <div style="font-size:20px;flex-shrink:0">🔒</div>
-      <p>This session is <strong>private and confidential</strong>. Your data is GDPR compliant and used solely to create your knowledge transfer report. It is not shared with anyone outside your organisation.</p>
+      <div style="font-size:18px;flex-shrink:0">🔒</div>
+      <p>GDPR compliant. Used solely to create your knowledge transfer report. Not shared outside your organisation.</p>
     </div>
-    <button class="btn-start" onclick="startInterview()">Start my knowledge session →</button>
+    <p style="font-size:13px;font-weight:500;color:var(--ink);text-align:center">How would you like to conduct your session?</p>
+    <div class="mode-choice">
+      <button class="mode-btn featured" onclick="startMode('video')">
+        <div class="mode-icon">🎤</div>
+        <span class="mode-label">Voice interview</span>
+        <span class="mode-sub">Talk naturally — recommended</span>
+      </button>
+      <button class="mode-btn" onclick="startMode('text')">
+        <div class="mode-icon">💬</div>
+        <span class="mode-label">Text interview</span>
+        <span class="mode-sub">Type your answers</span>
+      </button>
+    </div>
   </div>
 </div>
 
-<!-- INTERVIEW -->
-<div class="screen" id="s-interview">
-  <div class="voice-banner" id="voice-banner">
-    <p>💡 <strong>Tip:</strong> This works best when you speak freely — don't worry about structure, just talk naturally.</p>
-    <button class="btn-voice" onclick="startVoiceMode()">🎤 Switch to voice</button>
+<!-- VIDEO CALL -->
+<div class="screen" id="s-video">
+  <div class="call-wrap">
+    <div class="call-stage">
+
+      <div class="avatar-group">
+        <div class="avatar-frame">
+          <div class="avatar-rings" id="a-rings">
+            <div class="avatar-ring"></div>
+            <div class="avatar-ring"></div>
+            <div class="avatar-ring"></div>
+          </div>
+          <div class="avatar-face">
+            <div class="f-eyes"><div class="f-eye"></div><div class="f-eye"></div></div>
+            <div class="f-nose"></div>
+            <div class="f-mouth" id="f-mouth"></div>
+          </div>
+        </div>
+        <div class="avatar-chip">
+          <div class="chip-dot"></div>
+          <span class="chip-text" id="chip-text">Clarive AI · Ready</span>
+        </div>
+      </div>
+
+      <div class="speech-bubble">
+        <div class="speech-text cur" id="speech-text">Connecting...</div>
+      </div>
+
+      <div class="self-view">
+        <div class="self-init" id="self-init">?</div>
+        <div class="self-name" id="self-name">You</div>
+      </div>
+
+    </div>
+
+    <div class="call-controls">
+      <div class="ctrl-progress">
+        <div class="ctrl-prog-bar"><div class="ctrl-prog-fill" id="c-prog" style="width:0%"></div></div>
+        <div class="ctrl-prog-label" id="c-prog-lbl">0%</div>
+      </div>
+      <div class="ctrl-row">
+        <textarea class="ctrl-input" id="ctrl-input" placeholder="Or type your answer here..." rows="1" onkeydown="handleVKey(event)" oninput="autoResizeV(this)" disabled></textarea>
+        <button class="ctrl-btn mic" id="mic-btn" onclick="toggleMic()">🎤</button>
+        <button class="ctrl-btn send" id="v-send" onclick="sendVoiceAnswer()" disabled>
+          <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>
+        </button>
+      </div>
+      <div class="ctrl-status" id="ctrl-status">🔒 Private &amp; confidential · GDPR compliant</div>
+    </div>
   </div>
-  <div class="voice-active hidden" id="voice-active">
-    <div class="voice-orb" id="voice-orb">🎤</div>
-    <div class="voice-status" id="voice-status">Tap the microphone to speak</div>
-    <div class="voice-transcript" id="voice-transcript"></div>
-    <button class="btn-stop-voice" onclick="stopVoiceMode()">Switch back to text</button>
-  </div>
-  <div class="interview-wrap">
+</div>
+
+<!-- TEXT INTERVIEW -->
+<div class="screen" id="s-text">
+  <div class="text-wrap">
     <div class="chat-area" id="chat-area"></div>
-    <div class="input-area">
-      <textarea class="chat-input" id="chat-input" placeholder="Type your answer, or use voice mode above for a more natural conversation..." rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
-      <button class="send-btn" id="send-btn" onclick="sendMessage()" disabled>
+    <div class="text-input-area">
+      <textarea class="text-inp" id="text-inp" placeholder="Type your answer here..." rows="1" onkeydown="handleTKey(event)" oninput="autoResizeT(this)"></textarea>
+      <button class="send-text" id="send-text" onclick="sendTextMsg()" disabled>
         <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>
       </button>
     </div>
@@ -188,9 +280,9 @@
 <!-- REPORT -->
 <div class="screen" id="s-report">
   <div class="report-wrap">
-    <div class="report-generating" id="report-generating">
-      <div class="spinner"></div>
-      <p>Analysing your session in depth...<br>Building your personalised knowledge transfer report.</p>
+    <div class="report-gen" id="report-gen">
+      <div class="spin"></div>
+      <p>Analysing your session...<br>Generating your personalised knowledge transfer report.</p>
       <div class="gen-step" id="gen-step">Reading your responses...</div>
     </div>
     <div id="report-content" class="hidden"></div>
@@ -198,459 +290,278 @@
 </div>
 
 <script>
-  const params = new URLSearchParams(window.location.search);
-  const session = {
-    name: params.get('n') || 'there',
-    role: params.get('r') || 'your role',
-    mgr: params.get('m') || 'your manager',
-    reason: params.get('s') || 'transition'
+// PARAMS
+const params = new URLSearchParams(window.location.search);
+const sess = {
+  name: params.get('n')||'there',
+  role: params.get('r')||'your role',
+  mgr:  params.get('m')||'your manager',
+  why:  params.get('s')||'transition'
+};
+const whyLabels = {
+  offboarding:'Employee Offboarding', merger:'Merger & Acquisition',
+  transition:'Role Transition', succession:'Succession Planning', critical:'Critical Knowledge Capture'
+};
+
+function gi(name){ return name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2)||'?'; }
+
+// Set welcome
+document.getElementById('w-name').textContent = sess.name.split(' ')[0];
+document.getElementById('w-from').textContent = `${sess.mgr} has invited you to a Clarive knowledge session — ${whyLabels[sess.why]||sess.why}`;
+document.getElementById('self-init').textContent = gi(sess.name);
+document.getElementById('self-name').textContent = sess.name.split(' ')[0];
+
+// STATE
+let convo = [];
+let qCount = 0;
+let busy = false;
+let done = false;
+let mode = 'video';
+let recog = null;
+let recording = false;
+let synth = window.speechSynthesis;
+
+const SYS = `You are Clarive, a warm expert AI knowledge transfer interviewer. Session with ${sess.name}, a ${sess.role}. Type: ${whyLabels[sess.why]||sess.why}. Manager: ${sess.mgr}.
+RULES:
+- ONE short question at a time — max 2 sentences
+- Warm and conversational, never clinical
+- Follow up on specific things mentioned (names, suppliers, risks, processes)
+- If vague, ask for a specific example
+- Topics: responsibilities → contacts/relationships → undocumented processes → risks → active projects → advice for successor
+- After 8-10 meaningful exchanges write exactly INTERVIEW_COMPLETE on its own line then a warm closing
+- Never reveal you follow a structure`;
+
+function showScr(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
+
+// MODE SELECTION
+async function startMode(m){
+  mode = m;
+  document.getElementById('prog-wrap').style.display = 'flex';
+  if(m==='video'){ showScr('s-video'); await initVideo(); }
+  else { showScr('s-text'); await initText(); }
+}
+
+// ── VIDEO MODE ──
+async function initVideo(){
+  setFace('think'); setChip('Clarive AI · Connecting...');
+  await delay(700);
+  const msg = await ask([{role:'user',content:'Please begin the interview.'}]);
+  convo.push({role:'user',content:'Please begin the interview.'});
+  convo.push({role:'assistant',content:msg});
+  qCount++;
+  setFace('speak'); await speak(msg); setFace('idle');
+  document.getElementById('ctrl-input').disabled = false;
+  document.getElementById('v-send').disabled = false;
+  setStatus('🎤 Tap mic to speak, or type below');
+  setupRecog();
+}
+
+function setFace(state){
+  const m = document.getElementById('f-mouth');
+  const r = document.getElementById('a-rings');
+  const c = document.getElementById('chip-text');
+  m.className = 'f-mouth';
+  r.classList.remove('on');
+  if(state==='speak'){ m.classList.add('speak'); r.classList.add('on'); c.textContent='Clarive AI · Speaking'; }
+  else if(state==='think'){ m.classList.add('think'); c.textContent='Clarive AI · Thinking...'; }
+  else if(state==='listen'){ c.textContent='Clarive AI · Listening'; }
+  else { c.textContent='Clarive AI · Ready'; }
+}
+function setChip(t){ document.getElementById('chip-text').textContent=t; }
+function setSpeech(t,cur=false){
+  const el=document.getElementById('speech-text');
+  el.textContent=t;
+  cur ? el.classList.add('cur') : el.classList.remove('cur');
+}
+function setStatus(t){ document.getElementById('ctrl-status').textContent=t; }
+function setProg(pct){
+  pct=Math.min(pct,95);
+  document.getElementById('c-prog').style.width=pct+'%';
+  document.getElementById('c-prog-lbl').textContent=Math.round(pct)+'%';
+  document.getElementById('prog-fill').style.width=pct+'%';
+  document.getElementById('prog-label').textContent=Math.round(pct)+'%';
+}
+
+async function speak(text){
+  return new Promise(resolve=>{
+    if(!synth){ setSpeech(text); resolve(); return; }
+    synth.cancel();
+    const clean=text.replace(/INTERVIEW_COMPLETE/g,'').replace(/\*\*/g,'').trim();
+    if(!clean){ resolve(); return; }
+    // Typewriter
+    setSpeech('',true);
+    let i=0;
+    const ti=setInterval(()=>{
+      if(i<clean.length){ document.getElementById('speech-text').textContent=clean.substring(0,i+1); i++; }
+      else { clearInterval(ti); setSpeech(clean,false); }
+    },16);
+    const u=new SpeechSynthesisUtterance(clean);
+    u.rate=0.91; u.pitch=1.04; u.volume=1;
+    const vv=synth.getVoices();
+    const pv=vv.find(v=>(v.name.includes('Google')&&v.lang.startsWith('en'))||v.name.includes('Samantha')||v.name.includes('Daniel')||(v.lang.startsWith('en')&&!v.name.toLowerCase().includes('compact')));
+    if(pv) u.voice=pv;
+    u.onend=()=>{ clearInterval(ti); setSpeech(clean,false); resolve(); };
+    u.onerror=()=>{ clearInterval(ti); setSpeech(clean,false); resolve(); };
+    synth.speak(u);
+  });
+}
+
+async function sendVoiceAnswer(){
+  if(busy||done) return;
+  const inp=document.getElementById('ctrl-input');
+  const text=inp.value.trim();
+  if(!text) return;
+  inp.value=''; autoResizeV(inp);
+  await processAnswer(text);
+}
+
+async function processAnswer(text){
+  busy=true;
+  document.getElementById('v-send').disabled=true;
+  document.getElementById('ctrl-input').disabled=true;
+  setStatus('Processing...'); setFace('think'); setSpeech('...',true);
+  convo.push({role:'user',content:text});
+  const resp=await ask(convo);
+  convo.push({role:'assistant',content:resp});
+  qCount++; setProg((qCount/12)*90);
+  if(resp.includes('INTERVIEW_COMPLETE')){
+    done=true;
+    const closing=resp.replace('INTERVIEW_COMPLETE','').trim();
+    setFace('speak');
+    await speak(closing||`Thank you ${sess.name.split(' ')[0]}. That was invaluable. Generating your report now.`);
+    setFace('idle'); setProg(100);
+    await delay(1400);
+    synth&&synth.cancel();
+    showScr('s-report'); generateReport(); return;
+  }
+  setFace('speak'); await speak(resp); setFace('idle');
+  busy=false;
+  document.getElementById('ctrl-input').disabled=false;
+  document.getElementById('v-send').disabled=false;
+  setStatus('🎤 Tap mic to speak, or type below');
+}
+
+function setupRecog(){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR) return;
+  recog=new SR(); recog.continuous=false; recog.interimResults=true; recog.lang='en-US';
+  recog.onstart=()=>{ recording=true; document.getElementById('mic-btn').classList.add('on'); setStatus('🔴 Recording — speak now...'); setFace('listen'); };
+  recog.onresult=(e)=>{ let f='',ii=''; for(let i=e.resultIndex;i<e.results.length;i++){ if(e.results[i].isFinal)f+=e.results[i][0].transcript; else ii+=e.results[i][0].transcript; } document.getElementById('ctrl-input').value=f||ii; };
+  recog.onend=()=>{
+    recording=false; document.getElementById('mic-btn').classList.remove('on');
+    const t=document.getElementById('ctrl-input').value.trim();
+    if(t&&!busy){ setStatus('Sending...'); setTimeout(()=>sendVoiceAnswer(),400); }
+    else { setStatus('🎤 Tap mic to speak, or type below'); setFace('idle'); }
   };
+  recog.onerror=()=>{ recording=false; document.getElementById('mic-btn').classList.remove('on'); setStatus('🎤 Tap mic to speak, or type below'); setFace('idle'); };
+}
 
-  const reasonLabels = {
-    offboarding: 'Employee Offboarding', merger: 'Merger & Acquisition',
-    transition: 'Role Transition', succession: 'Succession Planning', critical: 'Critical Knowledge Capture'
-  };
+function toggleMic(){
+  if(!recog){ alert('Voice not supported. Please use Chrome.'); return; }
+  if(busy) return;
+  if(recording){ recog.stop(); }
+  else { synth&&synth.cancel(); document.getElementById('ctrl-input').value=''; try{recog.start();}catch(e){} }
+}
+function handleVKey(e){ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendVoiceAnswer();} }
+function autoResizeV(el){ el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,88)+'px'; }
 
-  document.getElementById('w-name').textContent = session.name.split(' ')[0];
-  document.getElementById('w-from').textContent = `${session.mgr} has invited you to a Clarive knowledge session — ${reasonLabels[session.reason] || session.reason}`;
+// ── TEXT MODE ──
+async function initText(){
+  busy=true; document.getElementById('send-text').disabled=true;
+  showTyp();
+  const msg=await ask([{role:'user',content:'Please begin the interview.'}]);
+  convo.push({role:'user',content:'Please begin the interview.'}); convo.push({role:'assistant',content:msg});
+  hideTyp(); addMsg('ai',msg); qCount++;
+  busy=false; document.getElementById('send-text').disabled=false; document.getElementById('text-inp').focus();
+}
+function addMsg(role,text){
+  const a=document.getElementById('chat-area'); const d=document.createElement('div'); d.className='msg '+role;
+  const clean=text.replace('INTERVIEW_COMPLETE','').trim();
+  const init=role==='ai'?'AI':gi(sess.name);
+  d.innerHTML=`<div class="msg-av">${init}</div><div class="msg-bub">${clean}</div>`;
+  a.appendChild(d); a.scrollTop=a.scrollHeight;
+}
+function showTyp(){ const a=document.getElementById('chat-area'); const d=document.createElement('div'); d.className='msg ai'; d.id='typ'; d.innerHTML=`<div class="msg-av">AI</div><div class="msg-bub"><div class="typ"><div class="td"></div><div class="td"></div><div class="td"></div></div></div>`; a.appendChild(d); a.scrollTop=a.scrollHeight; }
+function hideTyp(){ const t=document.getElementById('typ'); if(t)t.remove(); }
+async function sendTextMsg(){
+  if(busy||done) return;
+  const inp=document.getElementById('text-inp'); const text=inp.value.trim(); if(!text) return;
+  inp.value=''; autoResizeT(inp); addMsg('user',text); convo.push({role:'user',content:text});
+  busy=true; document.getElementById('send-text').disabled=true; showTyp(); await delay(500);
+  const resp=await ask(convo); convo.push({role:'assistant',content:resp}); qCount++;
+  document.getElementById('prog-fill').style.width=Math.min((qCount/12)*90,95)+'%';
+  document.getElementById('prog-label').textContent=Math.round(Math.min((qCount/12)*90,95))+'%';
+  hideTyp();
+  if(resp.includes('INTERVIEW_COMPLETE')){ done=true; addMsg('ai',resp); await delay(1800); showScr('s-report'); generateReport(); return; }
+  addMsg('ai',resp); busy=false; document.getElementById('send-text').disabled=false; document.getElementById('text-inp').focus();
+}
+function handleTKey(e){ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendTextMsg();} }
+function autoResizeT(el){ el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,110)+'px'; }
 
-  // Full conversation history for the AI (includes AI messages too)
-  let conversationHistory = [];
-  let questionCount = 0;
-  const MAX_QUESTIONS = 12; // allows follow-ups
-  let waiting = false;
-  let sessionComplete = false;
-
-  // System prompt for the AI interviewer
-  const INTERVIEWER_SYSTEM = `You are Clarive, a warm and expert AI knowledge transfer interviewer. You are conducting a confidential session with ${session.name}, a ${session.role}. Session type: ${reasonLabels[session.reason] || session.reason}. Their manager is ${session.mgr}.
-
-CRITICAL INTERVIEW RULES:
-- Ask ONE short, focused question at a time — never multiple questions in one message
-- Keep your messages SHORT — 2-3 sentences maximum
-- Be conversational and warm, not clinical or bureaucratic
-- When they mention something specific (a name, supplier, risk, process) — follow up on THAT specifically before moving on
-- Don't rush — depth on fewer topics is better than surface-level coverage of many
-- Acknowledge what they said before asking the next question
-- If an answer is vague, probe gently: "Can you give me a specific example?"
-- Topics to cover naturally across the conversation:
-  1. Key day-to-day responsibilities (start here)
-  2. Critical relationships and contacts (names matter)
-  3. Undocumented processes or tribal knowledge
-  4. Active risks or sensitive situations
-  5. Advice for successor
-- After 8-10 meaningful exchanges, wrap up warmly and say exactly "INTERVIEW_COMPLETE" on its own line followed by a thank you message
-- Never mention you are following a structure — it should feel like a natural conversation`;
-
-  function showScreen(id) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
+// ── API ──
+async function ask(messages){
+  try{
+    const r=await fetch('/api/claude',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:SYS,messages,max_tokens:400})});
+    const d=await r.json(); if(d.error)throw new Error(d.error);
+    return d.content.map(b=>b.text||'').join('').trim();
+  }catch(e){
+    const fb=['Thank you for that. Can you tell me about the key people — colleagues, suppliers, clients — your successor needs to know?','What processes or workflows only you know about — things not written down anywhere?','What are the biggest risks in the first 90 days for someone new to this role?','Are there any active projects or sensitive situations that need careful handling?','What is the single most important piece of advice for your successor?'];
+    return fb[Math.min(qCount,fb.length-1)];
   }
+}
 
-  function getInitials(name) {
-    return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+// ── REPORT ──
+const steps=['Reading your responses...','Identifying critical knowledge...','Mapping knowledge gaps...','Prioritising risks...','Generating recommendations...','Finalising your report...'];
+async function generateReport(){
+  let si=0; const iv=setInterval(()=>{ if(si<steps.length) document.getElementById('gen-step').textContent=steps[si++]; },1800);
+  const transcript=convo.filter(m=>m.content!=='Please begin the interview.').map(m=>`${m.role==='assistant'?'Clarive AI':sess.name}: ${m.content}`).join('\n\n');
+  const rsys=`You are an expert knowledge management consultant writing a detailed knowledge transfer report.
+HYPER-SPECIFIC — extract exact names, processes, systems, risks mentioned. NO generic language. Every item references what was actually said.
+Return ONLY valid JSON, no markdown:
+{"score":<60-98>,"summary":"<2-3 sentences with SPECIFIC details>","critical_knowledge":[{"text":"<specific item>","priority":"high|medium|low","source":"<brief quote>"}],"knowledge_gaps":["<specific gap>"],"recommendations":["<specific actionable rec>"],"key_contacts":["<names/roles mentioned>"],"immediate_actions":["<first 30 days>"]}`;
+  const rprompt=`Employee:${sess.name}\nRole:${sess.role}\nManager:${sess.mgr}\nSession:${whyLabels[sess.why]}\n\nTranscript:\n${transcript}\n\nGenerate a highly specific report based ONLY on what was discussed.`;
+  let data;
+  try{
+    const r=await fetch('/api/claude',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:rsys,messages:[{role:'user',content:rprompt}],max_tokens:1500})});
+    const raw=await r.json(); const txt=raw.content.map(b=>b.text||'').join('').replace(/```json|```/g,'').trim(); data=JSON.parse(txt);
+  }catch(e){
+    const um=convo.filter(m=>m.role==='user'&&m.content!=='Please begin the interview.').map(m=>m.content);
+    data={score:79,summary:`${sess.name} completed a knowledge capture session covering their role as ${sess.role}. Key topics were discussed.`,critical_knowledge:um.slice(0,4).map((msg,i)=>({text:msg.length>120?msg.substring(0,120)+'...':msg,priority:i<2?'high':'medium',source:'Direct response'})),knowledge_gaps:['Follow-up session recommended','Written documentation of contacts needed'],recommendations:[`Schedule handover meeting`,`Review documentation before last day`,'Introduce successor to key contacts'],key_contacts:['To be documented'],immediate_actions:['Review captured knowledge with HR','Schedule successor onboarding']};
   }
+  clearInterval(iv); renderReport(data);
+}
 
-  function addMessage(role, text) {
-    const area = document.getElementById('chat-area');
-    const d = document.createElement('div');
-    d.className = 'msg ' + role;
-    const initials = role === 'ai' ? 'AI' : getInitials(session.name);
-    // Clean display text (remove INTERVIEW_COMPLETE marker)
-    const displayText = text.replace('INTERVIEW_COMPLETE', '').trim();
-    d.innerHTML = `<div class="msg-avatar">${initials}</div><div class="msg-bubble">${displayText}</div>`;
-    area.appendChild(d);
-    area.scrollTop = area.scrollHeight;
-  }
+function renderReport(d){
+  const genEl = document.getElementById('report-gen');
+  genEl.style.display = 'none';
+  const ki=(d.critical_knowledge||[]).map(k=>`<div class="ki"><div class="kdot ${k.priority}"></div><div class="ktext"><div>${k.text}</div>${k.source?`<div style="font-size:11px;color:var(--ink-light);margin-top:2px;font-style:italic">"${k.source}"</div>`:''}</div><div class="ktag ${k.priority}">${k.priority}</div></div>`).join('');
+  const gi=(d.knowledge_gaps||[]).map(g=>`<div class="gap-i">${g}</div>`).join('');
+  const ri=(d.recommendations||[]).map(r=>`<div class="ki"><div class="kdot low"></div><div class="ktext">${r}</div></div>`).join('');
+  const contacts=d.key_contacts?.length?`<div class="r-sec"><div class="r-sec-title">Key contacts identified</div>${d.key_contacts.map(c=>`<div class="ki"><div class="kdot medium"></div><div class="ktext">${c}</div></div>`).join('')}</div>`:'';
+  const actions=d.immediate_actions?.length?`<div class="r-sec"><div class="r-sec-title">Immediate actions (first 30 days)</div>${d.immediate_actions.map(a=>`<div class="ki"><div class="kdot high"></div><div class="ktext">${a}</div></div>`).join('')}</div>`:'';
+  document.getElementById('report-content').innerHTML=`
+    <div class="rpt-header"><div><div class="rpt-title">Knowledge Transfer Report</div><div class="rpt-meta">${sess.name} · ${sess.role}</div><div class="rpt-meta">Generated ${new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})}</div></div><div class="score-box"><div class="score-num">${d.score}</div><div class="score-lbl">completeness</div></div></div>
+    <div class="r-sec"><div class="r-sec-title">Executive summary</div><p class="r-summary">${d.summary}</p></div>
+    <div class="r-sec"><div class="r-sec-title">Critical knowledge captured</div>${ki}</div>
+    <div class="r-sec"><div class="r-sec-title">Knowledge gaps identified</div>${gi}</div>
+    ${contacts}${actions}
+    <div class="r-sec"><div class="r-sec-title">Recommendations for ${sess.mgr}</div>${ri}</div>
+    <div class="rpt-footer"><p>This report has been delivered to <strong>${sess.mgr}</strong></p><div class="del-badge">✓ Report delivered successfully</div></div>
+    <div class="rpt-actions"><button class="btn-pdf" onclick="dlPDF()" id="pdf-btn">⬇ Download PDF</button><button class="btn-print" onclick="window.print()">🖨 Print</button></div>`;
+  document.getElementById('report-content').style.display = 'block';
+  document.getElementById('report-content').classList.remove('hidden');
+}
 
-  function showTyping() {
-    const area = document.getElementById('chat-area');
-    const d = document.createElement('div');
-    d.className = 'msg ai'; d.id = 'typing-msg';
-    d.innerHTML = `<div class="msg-avatar">AI</div><div class="msg-bubble"><div class="typing"><div class="t-dot"></div><div class="t-dot"></div><div class="t-dot"></div></div></div>`;
-    area.appendChild(d);
-    area.scrollTop = area.scrollHeight;
-  }
+function dlPDF(){
+  const btn=document.getElementById('pdf-btn'); btn.textContent='⏳ Preparing...'; btn.disabled=true;
+  const s=document.createElement('style');
+  s.textContent='@media print{.topbar,.rpt-actions,#s-welcome,#s-video,#s-text{display:none!important}#s-report{display:block!important}body{background:white}.report-wrap{padding:1cm}.ki{break-inside:avoid}}';
+  document.head.appendChild(s);
+  setTimeout(()=>{ window.print(); document.head.removeChild(s); btn.textContent='⬇ Download PDF'; btn.disabled=false; },300);
+}
 
-  function removeTyping() { const t = document.getElementById('typing-msg'); if (t) t.remove(); }
-
-  function setProgress(pct) {
-    document.getElementById('prog-fill').style.width = Math.min(pct, 95) + '%';
-    document.getElementById('prog-label').textContent = Math.round(Math.min(pct, 95)) + '%';
-  }
-
-  async function callClarive(messages) {
-    const response = await fetch('/api/claude', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        system: INTERVIEWER_SYSTEM,
-        messages: messages,
-        max_tokens: 400
-      })
-    });
-    const data = await response.json();
-    return data.content.map(b => b.text || '').join('').trim();
-  }
-
-  async function startInterview() {
-    showScreen('s-interview');
-    document.getElementById('prog-wrap').style.display = 'flex';
-    waiting = true;
-    document.getElementById('send-btn').disabled = true;
-    showTyping();
-
-    try {
-      // First message — AI opens the interview
-      const aiOpening = await callClarive([
-        { role: 'user', content: 'Please begin the interview.' }
-      ]);
-      removeTyping();
-      addMessage('ai', aiOpening);
-      conversationHistory.push({ role: 'user', content: 'Please begin the interview.' });
-      conversationHistory.push({ role: 'assistant', content: aiOpening });
-      questionCount++;
-      setProgress(10);
-    } catch(e) {
-      removeTyping();
-      addMessage('ai', `Hello ${session.name.split(' ')[0]}, thank you for taking the time for this session. To start, can you walk me through the top 3 responsibilities that take most of your time in your role as ${session.role}?`);
-      conversationHistory.push({ role: 'user', content: 'Please begin the interview.' });
-      conversationHistory.push({ role: 'assistant', content: `Hello ${session.name.split(' ')[0]}, thank you for taking the time for this session. To start, can you walk me through the top 3 responsibilities that take most of your time in your role as ${session.role}?` });
-      questionCount++;
-    }
-
-    waiting = false;
-    document.getElementById('send-btn').disabled = false;
-    document.getElementById('chat-input').focus();
-  }
-
-  async function sendMessage() {
-    if (waiting || sessionComplete) return;
-    const input = document.getElementById('chat-input');
-    const text = input.value.trim();
-    if (!text) return;
-    input.value = ''; autoResize(input);
-    addMessage('user', text);
-    conversationHistory.push({ role: 'user', content: text });
-
-    waiting = true;
-    document.getElementById('send-btn').disabled = true;
-    showTyping();
-    setProgress((questionCount / MAX_QUESTIONS) * 90);
-
-    try {
-      const aiResponse = await callClarive(conversationHistory);
-      removeTyping();
-
-      // Check if interview is complete
-      if (aiResponse.includes('INTERVIEW_COMPLETE')) {
-        sessionComplete = true;
-        addMessage('ai', aiResponse);
-        conversationHistory.push({ role: 'assistant', content: aiResponse });
-        setProgress(100);
-        await delay(2000);
-        showScreen('s-report');
-        generateReport();
-        return;
-      }
-
-      addMessage('ai', aiResponse);
-      conversationHistory.push({ role: 'assistant', content: aiResponse });
-      questionCount++;
-      setProgress((questionCount / MAX_QUESTIONS) * 90);
-    } catch(e) {
-      removeTyping();
-      // Rotate through fallback questions instead of repeating
-      const fallbacks = [
-        "Can you tell me more about the key relationships — specific people, suppliers or clients — that your successor will need to manage?",
-        "Are there any undocumented processes or informal workflows that only you know about?",
-        "What are the biggest risks in the first 90 days for someone new to this role?",
-        "Are there any active projects or sensitive ongoing situations to be aware of?",
-        "What would you tell your successor on their first day?"
-      ];
-      const fallbackMsg = fallbacks[Math.min(questionCount - 1, fallbacks.length - 1)];
-      addMessage('ai', fallbackMsg);
-      conversationHistory.push({ role: 'assistant', content: fallbackMsg });
-      questionCount++;
-    }
-
-    waiting = false;
-    document.getElementById('send-btn').disabled = false;
-    document.getElementById('chat-input').focus();
-  }
-
-  function handleKey(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } }
-  function autoResize(el) { el.style.height = 'auto'; el.style.height = Math.min(el.scrollHeight, 120) + 'px'; }
-  function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
-
-  const genSteps = [
-    'Reading your responses...',
-    'Identifying critical knowledge...',
-    'Mapping knowledge gaps...',
-    'Prioritising risks...',
-    'Generating recommendations...',
-    'Finalising your report...'
-  ];
-
-  async function generateReport() {
-    let stepIdx = 0;
-    const stepInterval = setInterval(() => {
-      if (stepIdx < genSteps.length) {
-        document.getElementById('gen-step').textContent = genSteps[stepIdx++];
-      }
-    }, 1800);
-
-    // Build full transcript from conversation
-    const transcript = conversationHistory
-      .filter(m => m.role !== 'system')
-      .map(m => `${m.role === 'assistant' ? 'Clarive AI' : session.name}: ${m.content}`)
-      .join('\n\n');
-
-    const reportSystem = `You are an expert knowledge management consultant writing a detailed knowledge transfer report. 
-You must be HYPER-SPECIFIC — extract exact names, processes, systems, risks mentioned in the transcript.
-Do NOT use generic language. Every item must reference something the person actually said.
-Return ONLY valid JSON, no markdown, no backticks:
-{
-  "score": <number 60-98 based on depth of answers>,
-  "summary": "<2-3 sentences that reference SPECIFIC things mentioned in the interview>",
-  "critical_knowledge": [
-    {"text": "<specific knowledge item referencing exact details from transcript>", "priority": "high|medium|low", "source": "<brief quote or reference from what they said>"}
-  ],
-  "knowledge_gaps": ["<specific gap identified from what was NOT covered or was vague>"],
-  "recommendations": ["<specific, actionable recommendation for ${session.mgr} based on what was said>"],
-  "key_contacts": ["<any specific names or relationships mentioned>"],
-  "immediate_actions": ["<things that must happen in first 30 days based on what was said>"]
-}`;
-
-    const reportPrompt = `Employee: ${session.name}
-Role: ${session.role}
-Manager: ${session.mgr}
-Session type: ${reasonLabels[session.reason]}
-
-Full interview transcript:
-${transcript}
-
-Generate a highly specific knowledge transfer report based ONLY on what was actually discussed above.`;
-
-    let data;
-    try {
-      const r = await fetch('/api/claude', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ system: reportSystem, messages: [{ role: 'user', content: reportPrompt }], max_tokens: 1500 })
-      });
-      const raw = await r.json();
-      const txt = raw.content.map(b => b.text || '').join('').replace(/```json|```/g, '').trim();
-      data = JSON.parse(txt);
-    } catch(e) {
-      // Fallback using actual conversation content
-      data = buildFallbackReport(transcript);
-    }
-
-    clearInterval(stepInterval);
-    renderReport(data);
-  }
-
-  function buildFallbackReport(transcript) {
-    // Extract actual content from conversation for fallback
-    const userMessages = conversationHistory
-      .filter(m => m.role === 'user' && m.content !== 'Please begin the interview.')
-      .map(m => m.content);
-
-    return {
-      score: 78,
-      summary: `${session.name} completed a ${questionCount}-exchange knowledge capture session covering their role as ${session.role}. The session covered key responsibilities, relationships, processes and risks specific to their position.`,
-      critical_knowledge: userMessages.slice(0, 4).map((msg, i) => ({
-        text: msg.length > 120 ? msg.substring(0, 120) + '...' : msg,
-        priority: i < 2 ? 'high' : 'medium',
-        source: 'Direct response from interview'
-      })),
-      knowledge_gaps: ['Follow-up session recommended to document specific process details', 'Written documentation of key contacts and vendor relationships needed'],
-      recommendations: [`Schedule handover meeting between ${session.name} and successor`, 'Create written documentation for undocumented processes mentioned', 'Introduce successor to key contacts before last day'],
-      key_contacts: ['To be documented in follow-up session'],
-      immediate_actions: ['Review interview responses with HR team', 'Schedule successor onboarding based on insights captured']
-    };
-  }
-
-  function renderReport(data) {
-    document.getElementById('report-generating').classList.add('hidden');
-
-    const ki = (data.critical_knowledge || []).map(k => `
-      <div class="k-item">
-        <div class="k-dot ${k.priority}"></div>
-        <div class="k-text">
-          <div>${k.text}</div>
-          ${k.source ? `<div style="font-size:11px;color:var(--ink-light);margin-top:3px;font-style:italic">"${k.source}"</div>` : ''}
-        </div>
-        <div class="k-tag ${k.priority}">${k.priority}</div>
-      </div>`).join('');
-
-    const gi = (data.knowledge_gaps || []).map(g => `<div class="gap-item">${g}</div>`).join('');
-    const ri = (data.recommendations || []).map(r => `<div class="k-item"><div class="k-dot low"></div><div class="k-text">${r}</div></div>`).join('');
-    const contacts = data.key_contacts && data.key_contacts.length ? `
-      <div class="r-section">
-        <div class="r-section-title">Key contacts identified</div>
-        ${data.key_contacts.map(c => `<div class="k-item"><div class="k-dot medium"></div><div class="k-text">${c}</div></div>`).join('')}
-      </div>` : '';
-    const actions = data.immediate_actions && data.immediate_actions.length ? `
-      <div class="r-section">
-        <div class="r-section-title">Immediate actions (first 30 days)</div>
-        ${data.immediate_actions.map(a => `<div class="k-item"><div class="k-dot high"></div><div class="k-text">${a}</div></div>`).join('')}
-      </div>` : '';
-
-    document.getElementById('report-content').innerHTML = `
-      <div class="report-header">
-        <div>
-          <div class="report-title-text">Knowledge Transfer Report</div>
-          <div class="report-meta">${session.name} · ${session.role}</div>
-          <div class="report-meta">Generated ${new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</div>
-        </div>
-        <div class="score-box">
-          <div class="score-num">${data.score}</div>
-          <div class="score-label">completeness</div>
-        </div>
-      </div>
-      <div class="r-section"><div class="r-section-title">Executive summary</div><p class="r-summary">${data.summary}</p></div>
-      <div class="r-section"><div class="r-section-title">Critical knowledge captured</div>${ki}</div>
-      <div class="r-section"><div class="r-section-title">Knowledge gaps identified</div>${gi}</div>
-      ${contacts}
-      ${actions}
-      <div class="r-section"><div class="r-section-title">Recommendations for ${session.mgr}</div>${ri}</div>
-      <div class="report-footer">
-        <p>This report has been delivered to <strong>${session.mgr}</strong></p>
-        <div class="delivered-badge">✓ Report delivered successfully</div>
-      </div>
-      <div class="report-actions">
-        <button class="btn-pdf" onclick="downloadPDF()">⬇ Download PDF report</button>
-        <button class="btn-print" onclick="window.print()">🖨 Print report</button>
-      </div>
-    `;
-    document.getElementById('report-content').classList.remove('hidden');
-  }
-  // PDF DOWNLOAD
-  function downloadPDF() {
-    const btn = document.querySelector('.btn-pdf');
-    btn.textContent = '⏳ Generating PDF...';
-    btn.disabled = true;
-
-    // Use print-to-PDF as the most reliable cross-browser method
-    const style = document.createElement('style');
-    style.id = 'pdf-style';
-    style.textContent = `
-      @media print {
-        .topbar, .report-actions, .voice-banner, .voice-active, #s-welcome, #s-interview { display: none !important; }
-        #s-report { display: block !important; }
-        .report-wrap { padding: 1cm; }
-        body { background: white; font-size: 11pt; }
-        .k-item { break-inside: avoid; }
-        .r-section { break-inside: avoid; }
-      }
-    `;
-    document.head.appendChild(style);
-
-    setTimeout(() => {
-      window.print();
-      document.head.removeChild(style);
-      btn.textContent = '⬇ Download PDF report';
-      btn.disabled = false;
-    }, 300);
-  }
-
-  // VOICE MODE
-  let recognition = null;
-  let voiceMode = false;
-  let isListening = false;
-
-  function startVoiceMode() {
-    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-      alert('Voice mode is not supported in this browser. Please use Chrome for voice interviews.');
-      return;
-    }
-
-    voiceMode = true;
-    document.getElementById('voice-banner').classList.add('hidden');
-    document.getElementById('voice-active').classList.remove('hidden');
-    initSpeechRecognition();
-  }
-
-  function stopVoiceMode() {
-    voiceMode = false;
-    if (recognition) recognition.stop();
-    document.getElementById('voice-banner').classList.remove('hidden');
-    document.getElementById('voice-active').classList.add('hidden');
-  }
-
-  function initSpeechRecognition() {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    recognition = new SpeechRecognition();
-    recognition.continuous = false;
-    recognition.interimResults = true;
-    recognition.lang = 'en-US';
-
-    const orb = document.getElementById('voice-orb');
-    const status = document.getElementById('voice-status');
-    const transcript = document.getElementById('voice-transcript');
-
-    recognition.onstart = () => {
-      isListening = true;
-      orb.classList.add('listening');
-      status.textContent = 'Listening... speak now';
-      transcript.textContent = '';
-    };
-
-    recognition.onresult = (event) => {
-      let interim = '';
-      let final = '';
-      for (let i = event.resultIndex; i < event.results.length; i++) {
-        if (event.results[i].isFinal) final += event.results[i][0].transcript;
-        else interim += event.results[i][0].transcript;
-      }
-      transcript.textContent = interim || final;
-      if (final) {
-        document.getElementById('chat-input').value = final;
-      }
-    };
-
-    recognition.onend = () => {
-      isListening = false;
-      orb.classList.remove('listening');
-      const text = document.getElementById('chat-input').value.trim();
-      if (text && voiceMode) {
-        status.textContent = 'Got it! Sending your answer...';
-        setTimeout(() => {
-          sendMessage();
-          transcript.textContent = '';
-          if (voiceMode && !sessionComplete) {
-            setTimeout(() => {
-              status.textContent = 'Tap the microphone to speak';
-              startListening();
-            }, 2000);
-          }
-        }, 500);
-      } else {
-        status.textContent = 'Tap the microphone to speak';
-      }
-    };
-
-    recognition.onerror = () => {
-      isListening = false;
-      orb.classList.remove('listening');
-      status.textContent = 'Tap the microphone to speak';
-    };
-
-    orb.onclick = () => {
-      if (isListening) { recognition.stop(); }
-      else { startListening(); }
-    };
-
-    startListening();
-  }
-
-  function startListening() {
-    if (recognition && !isListening && !waiting && !sessionComplete) {
-      try { recognition.start(); } catch(e) {}
-    }
-  }
-
+function delay(ms){ return new Promise(r=>setTimeout(r,ms)); }
+if(synth){ synth.onvoiceschanged=()=>synth.getVoices(); synth.getVoices(); }
 </script>
 </body>
 </html>
