@@ -12,11 +12,20 @@ module.exports = async function handler(req, res) {
   if (!apiKey) return res.status(500).json({ error: 'API key not configured' });
 
   try {
-    const { messages, system, max_tokens } = req.body;
+    // Parse body manually if needed
+    let payload = req.body;
+    if (typeof payload === 'string') {
+      try { payload = JSON.parse(payload); } catch(e) { return res.status(400).json({ error: 'Invalid JSON body' }); }
+    }
+    if (!payload) return res.status(400).json({ error: 'Empty request body' });
+
+    const { messages, system, max_tokens } = payload;
+    if (!messages || !Array.isArray(messages)) return res.status(400).json({ error: 'Missing messages array' });
+
     const body = JSON.stringify({
       model: 'claude-sonnet-4-20250514',
       max_tokens: max_tokens || 1000,
-      system,
+      system: system || '',
       messages
     });
 
@@ -33,21 +42,21 @@ module.exports = async function handler(req, res) {
         }
       };
 
-      const req = https.request(options, (response) => {
+      const request = https.request(options, (response) => {
         let data = '';
         response.on('data', chunk => data += chunk);
         response.on('end', () => {
           try { resolve(JSON.parse(data)); }
-          catch(e) { reject(new Error('Failed to parse response')); }
+          catch(e) { reject(new Error('Failed to parse Anthropic response: ' + data.substring(0, 200))); }
         });
       });
 
-      req.on('error', reject);
-      req.write(body);
-      req.end();
+      request.on('error', reject);
+      request.write(body);
+      request.end();
     });
 
-    if (data.error) return res.status(500).json({ error: data.error.message });
+    if (data.error) return res.status(500).json({ error: data.error.message, type: data.error.type });
     return res.status(200).json(data);
   } catch (error) {
     return res.status(500).json({ error: error.message });
