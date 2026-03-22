@@ -101,7 +101,32 @@
   .report-footer { padding: 1.5rem 0; border-top: 1px solid var(--border); margin-top: 2rem; text-align: center; }
   .report-footer p { font-size: 13px; color: var(--ink-light); margin-bottom: 1rem; }
   .delivered-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--sage-pale); color: var(--sage); font-size: 13px; font-weight: 500; padding: 8px 18px; border-radius: 20px; border: 1px solid rgba(29,158,117,0.2); }
-  .hidden { display: none !important; }
+  /* PDF & VOICE BUTTONS */
+  .report-actions { display: flex; gap: 10px; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .btn-pdf { display: flex; align-items: center; gap: 8px; background: var(--ink); color: var(--cream); border: none; border-radius: 40px; padding: 12px 24px; font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; transition: background 0.2s; flex: 1; justify-content: center; }
+  .btn-pdf:hover { background: var(--sage); }
+  .btn-print { display: flex; align-items: center; gap: 8px; background: var(--cream-dark); color: var(--ink); border: 1px solid var(--border); border-radius: 40px; padding: 12px 24px; font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; transition: background 0.2s; flex: 1; justify-content: center; }
+  .btn-print:hover { background: var(--border); }
+
+  /* VOICE MODE */
+  .voice-banner { background: var(--sage-pale); border: 1px solid rgba(29,158,117,0.3); border-radius: var(--radius); padding: 1rem 1.25rem; margin: 1rem 2rem 0; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+  .voice-banner p { font-size: 13px; color: var(--ink-mid); }
+  .voice-banner strong { color: var(--sage); }
+  .btn-voice { background: var(--sage); color: white; border: none; border-radius: 20px; padding: 8px 18px; font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap; transition: background 0.2s; }
+  .btn-voice:hover { background: #0F6E56; }
+  .voice-active { background: var(--ink); border-radius: var(--radius); padding: 1.5rem 2rem; margin: 1rem 2rem 0; text-align: center; }
+  .voice-orb { width: 80px; height: 80px; border-radius: 50%; background: var(--sage); margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; font-size: 32px; animation: orbPulse 2s infinite; }
+  @keyframes orbPulse { 0%,100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(29,158,117,0.4); } 50% { transform: scale(1.05); box-shadow: 0 0 0 12px rgba(29,158,117,0); } }
+  .voice-orb.listening { background: #E24B4A; animation: orbPulse 0.8s infinite; }
+  .voice-status { font-size: 14px; color: rgba(250,248,243,0.7); margin-bottom: 0.5rem; }
+  .voice-transcript { font-size: 13px; color: rgba(250,248,243,0.5); font-style: italic; min-height: 20px; }
+  .btn-stop-voice { background: rgba(255,255,255,0.1); color: var(--cream); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 8px 18px; font-family: 'Outfit', sans-serif; font-size: 13px; cursor: pointer; margin-top: 1rem; }
+
+  @media print {
+    .topbar, .report-actions, .voice-banner { display: none !important; }
+    body { background: white; }
+    .report-wrap { padding: 0; }
+  }
 </style>
 </head>
 <body>
@@ -139,10 +164,20 @@
 
 <!-- INTERVIEW -->
 <div class="screen" id="s-interview">
+  <div class="voice-banner" id="voice-banner">
+    <p>💡 <strong>Tip:</strong> This works best when you speak freely — don't worry about structure, just talk naturally.</p>
+    <button class="btn-voice" onclick="startVoiceMode()">🎤 Switch to voice</button>
+  </div>
+  <div class="voice-active hidden" id="voice-active">
+    <div class="voice-orb" id="voice-orb">🎤</div>
+    <div class="voice-status" id="voice-status">Tap the microphone to speak</div>
+    <div class="voice-transcript" id="voice-transcript"></div>
+    <button class="btn-stop-voice" onclick="stopVoiceMode()">Switch back to text</button>
+  </div>
   <div class="interview-wrap">
     <div class="chat-area" id="chat-area"></div>
     <div class="input-area">
-      <textarea class="chat-input" id="chat-input" placeholder="Type your answer here..." rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+      <textarea class="chat-input" id="chat-input" placeholder="Type your answer, or use voice mode above for a more natural conversation..." rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
       <button class="send-btn" id="send-btn" onclick="sendMessage()" disabled>
         <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>
       </button>
@@ -187,29 +222,24 @@
   let sessionComplete = false;
 
   // System prompt for the AI interviewer
-  const INTERVIEWER_SYSTEM = `You are Clarive, an expert AI knowledge transfer interviewer. You are conducting a confidential exit interview with ${session.name}, who is a ${session.role}. The session is for: ${reasonLabels[session.reason] || session.reason}. Their manager is ${session.mgr}.
+  const INTERVIEWER_SYSTEM = `You are Clarive, a warm and expert AI knowledge transfer interviewer. You are conducting a confidential session with ${session.name}, a ${session.role}. Session type: ${reasonLabels[session.reason] || session.reason}. Their manager is ${session.mgr}.
 
-Your goal is to extract deep, specific, actionable institutional knowledge that would be lost if this person left tomorrow.
-
-INTERVIEW STRUCTURE:
-You have a structured set of core topics to cover, but you must adapt dynamically:
-1. Key responsibilities and how time is spent
-2. Critical relationships (internal and external) — names, context, history
-3. Undocumented processes and tribal knowledge
-4. Risks, landmines, and things that could go wrong
-5. Active projects and sensitive ongoing situations
-6. Advice for successor
-
-CRITICAL RULES:
-- Ask ONE question at a time
-- When the person mentions something specific (a name, a risk, a process, a supplier), ALWAYS ask a targeted follow-up to extract more detail before moving on
-- If they say something vague like "there are some risks", probe: "Can you be more specific — what are the top 2 or 3 risks you're thinking of?"
-- Reference what they said in previous answers to show you're listening
-- After covering all topics (roughly 8-12 exchanges), say exactly: "INTERVIEW_COMPLETE" on its own line, then add a warm closing message
-- Be warm, professional, and reassuring — remind them this is confidential
-- Extract NAMES, SPECIFIC PROCESSES, SPECIFIC RISKS — not generalities
-
-Start with a warm welcome and your first question about their key responsibilities.`;
+CRITICAL INTERVIEW RULES:
+- Ask ONE short, focused question at a time — never multiple questions in one message
+- Keep your messages SHORT — 2-3 sentences maximum
+- Be conversational and warm, not clinical or bureaucratic
+- When they mention something specific (a name, supplier, risk, process) — follow up on THAT specifically before moving on
+- Don't rush — depth on fewer topics is better than surface-level coverage of many
+- Acknowledge what they said before asking the next question
+- If an answer is vague, probe gently: "Can you give me a specific example?"
+- Topics to cover naturally across the conversation:
+  1. Key day-to-day responsibilities (start here)
+  2. Critical relationships and contacts (names matter)
+  3. Undocumented processes or tribal knowledge
+  4. Active risks or sensitive situations
+  5. Advice for successor
+- After 8-10 meaningful exchanges, wrap up warmly and say exactly "INTERVIEW_COMPLETE" on its own line followed by a thank you message
+- Never mention you are following a structure — it should feel like a natural conversation`;
 
   function showScreen(id) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -489,9 +519,137 @@ Generate a highly specific knowledge transfer report based ONLY on what was actu
         <p>This report has been delivered to <strong>${session.mgr}</strong></p>
         <div class="delivered-badge">✓ Report delivered successfully</div>
       </div>
+      <div class="report-actions">
+        <button class="btn-pdf" onclick="downloadPDF()">⬇ Download PDF report</button>
+        <button class="btn-print" onclick="window.print()">🖨 Print report</button>
+      </div>
     `;
     document.getElementById('report-content').classList.remove('hidden');
   }
-</script>
+  // PDF DOWNLOAD
+  function downloadPDF() {
+    const btn = document.querySelector('.btn-pdf');
+    btn.textContent = '⏳ Generating PDF...';
+    btn.disabled = true;
+
+    // Use print-to-PDF as the most reliable cross-browser method
+    const style = document.createElement('style');
+    style.id = 'pdf-style';
+    style.textContent = `
+      @media print {
+        .topbar, .report-actions, .voice-banner, .voice-active, #s-welcome, #s-interview { display: none !important; }
+        #s-report { display: block !important; }
+        .report-wrap { padding: 1cm; }
+        body { background: white; font-size: 11pt; }
+        .k-item { break-inside: avoid; }
+        .r-section { break-inside: avoid; }
+      }
+    `;
+    document.head.appendChild(style);
+
+    setTimeout(() => {
+      window.print();
+      document.head.removeChild(style);
+      btn.textContent = '⬇ Download PDF report';
+      btn.disabled = false;
+    }, 300);
+  }
+
+  // VOICE MODE
+  let recognition = null;
+  let voiceMode = false;
+  let isListening = false;
+
+  function startVoiceMode() {
+    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+      alert('Voice mode is not supported in this browser. Please use Chrome for voice interviews.');
+      return;
+    }
+
+    voiceMode = true;
+    document.getElementById('voice-banner').classList.add('hidden');
+    document.getElementById('voice-active').classList.remove('hidden');
+    initSpeechRecognition();
+  }
+
+  function stopVoiceMode() {
+    voiceMode = false;
+    if (recognition) recognition.stop();
+    document.getElementById('voice-banner').classList.remove('hidden');
+    document.getElementById('voice-active').classList.add('hidden');
+  }
+
+  function initSpeechRecognition() {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    recognition = new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = true;
+    recognition.lang = 'en-US';
+
+    const orb = document.getElementById('voice-orb');
+    const status = document.getElementById('voice-status');
+    const transcript = document.getElementById('voice-transcript');
+
+    recognition.onstart = () => {
+      isListening = true;
+      orb.classList.add('listening');
+      status.textContent = 'Listening... speak now';
+      transcript.textContent = '';
+    };
+
+    recognition.onresult = (event) => {
+      let interim = '';
+      let final = '';
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        if (event.results[i].isFinal) final += event.results[i][0].transcript;
+        else interim += event.results[i][0].transcript;
+      }
+      transcript.textContent = interim || final;
+      if (final) {
+        document.getElementById('chat-input').value = final;
+      }
+    };
+
+    recognition.onend = () => {
+      isListening = false;
+      orb.classList.remove('listening');
+      const text = document.getElementById('chat-input').value.trim();
+      if (text && voiceMode) {
+        status.textContent = 'Got it! Sending your answer...';
+        setTimeout(() => {
+          sendMessage();
+          transcript.textContent = '';
+          if (voiceMode && !sessionComplete) {
+            setTimeout(() => {
+              status.textContent = 'Tap the microphone to speak';
+              startListening();
+            }, 2000);
+          }
+        }, 500);
+      } else {
+        status.textContent = 'Tap the microphone to speak';
+      }
+    };
+
+    recognition.onerror = () => {
+      isListening = false;
+      orb.classList.remove('listening');
+      status.textContent = 'Tap the microphone to speak';
+    };
+
+    orb.onclick = () => {
+      if (isListening) { recognition.stop(); }
+      else { startListening(); }
+    };
+
+    startListening();
+  }
+
+  function startListening() {
+    if (recognition && !isListening && !waiting && !sessionComplete) {
+      try { recognition.start(); } catch(e) {}
+    }
+  }
+
 </body>
 </html>
