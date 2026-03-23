@@ -432,7 +432,9 @@ async function processAnswer(text){
     setFace('idle'); setProg(100);
     await delay(1400);
     synth&&synth.cancel();
-    showScr('s-report'); generateReport(); return;
+    showScr('s-report');
+    document.getElementById('prog-wrap').style.display = 'none';
+    generateReport(); return;
   }
   setFace('speak'); await speak(resp); setFace('idle');
   busy=false;
@@ -492,7 +494,7 @@ async function sendTextMsg(){
   document.getElementById('prog-fill').style.width=Math.min((qCount/12)*90,95)+'%';
   document.getElementById('prog-label').textContent=Math.round(Math.min((qCount/12)*90,95))+'%';
   hideTyp();
-  if(resp.includes('INTERVIEW_COMPLETE')){ done=true; addMsg('ai',resp); await delay(1800); showScr('s-report'); generateReport(); return; }
+  if(resp.includes('INTERVIEW_COMPLETE')){ done=true; addMsg('ai',resp); await delay(1800); document.getElementById('prog-wrap').style.display='none'; showScr('s-report'); generateReport(); return; }
   addMsg('ai',resp); busy=false; document.getElementById('send-text').disabled=false; document.getElementById('text-inp').focus();
 }
 function handleTKey(e){ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendTextMsg();} }
